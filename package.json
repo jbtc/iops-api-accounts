@@ -4,6 +4,7 @@
   "description": "API Accounts",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha test"
   },
   "repository": {
