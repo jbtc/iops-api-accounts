@@ -1,23 +1,17 @@
 'use strict';
 
 var expect = require('chai').expect;
+
 require('../../config');
-
 var request = require('supertest');
+request = request('http://iops-api-accounts.ka');
 
-describe('/', function() {
+describe('/v1/system/status', function() {
 
-  it('should return hello-world', function(done) {
-
-    request('http://iops-api-accounts.ka')
-      .get('/')
-      .expect(200)
-      .end(function(err, resp) {
-        if(err) return done(err);
-        expect(resp.body.hello).to.be.eql('world');
-        done();
-      });
-
+  it('should be able to get a system status', function(done) {
+    request
+      .get('/v1/systems/status')
+      .expect(200, done);
   });
 
 });
