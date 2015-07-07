@@ -2,6 +2,7 @@
 
 var path = require('path');
 var nconf = require('nconf');
+var mongojs = require('mongojs');
 
 nconf
   .argv()
@@ -19,3 +20,4 @@ if(environment === 'testing'){
 nconf.file(configFile);
 
 module.exports = nconf;
+module.exports.db  = mongojs(nconf.get('ACCOUNTS_MONGODB_URI'));

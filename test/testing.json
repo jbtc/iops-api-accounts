@@ -1,5 +1,0 @@
-{
-  "PORT": "3000",
-  "ACCOUNTS_MONGODB_URI": "localhost/testing-accounts",
-  "NODE_ENV": "testing"
-}

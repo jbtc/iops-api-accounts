@@ -1,0 +1,13 @@
+{
+  "files": [
+    "config/**/*",
+    "lib/**/*",
+    "index.js"
+  ],
+  "tests": [
+    "test/**/*"
+  ],
+  "env": {
+    "type": "node"
+  }
+}
