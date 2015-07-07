@@ -1,0 +1,29 @@
+{
+  "name": "iops-api-accounts",
+  "version": "1.0.0",
+  "description": "API Accounts",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://tylergarlick@bitbucket.org/jbt-iops/iops-api-accounts.git"
+  },
+  "keywords": [
+    "api",
+    "accounts"
+  ],
+  "author": "Tyler Garlick <tjgarlick@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/jbt-iops/iops-api-accounts#readme",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5",
+    "supertest": "^1.0.1"
+  },
+  "dependencies": {
+    "express": "^4.13.1",
+    "nconf": "^0.7.1"
+  }
+}

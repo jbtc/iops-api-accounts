@@ -1,0 +1,5 @@
+{
+  "PORT": 4000,
+  "ACCOUNTS_MONGODB_URI": "localhost/accounts",
+  "NODE_ENV": "development"
+}

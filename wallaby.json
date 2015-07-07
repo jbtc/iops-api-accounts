@@ -1,0 +1,19 @@
+{
+  "files": [
+    "config/**/*",
+    "lib/**/*.js",
+    "index.js"
+  ],
+  "tests": [
+    "test/**/*.js"
+  ],
+  "env": {
+    "type": "node"
+  },
+  "workers": {
+    "recycle": true
+  },
+  "params": {
+    "env": "NODE_ENV=testing"
+  }
+}
