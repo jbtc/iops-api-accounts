@@ -1,7 +1,5 @@
 'use strict';
 
-require('../helper');
-
 var request = require('supertest');
 var app = require('../../lib');
 
