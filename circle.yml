@@ -9,6 +9,5 @@ dependencies:
 
 test:
   post:
-    - docker build -t local-image:$CIRCLE_SHA1 .
     - docker tag local-image:$CIRCLE_SHA1 tutum.co/iops/api-accounts:$CIRCLE_SHA1
     - docker push tutum.co/iops/api-accounts:$CIRCLE_SHA1
