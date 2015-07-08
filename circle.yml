@@ -1,0 +1,14 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS tutum.co
+    - docker info
+
+test:
+  post:
+    - docker build -t local-image:$CIRCLE_SHA1 .
+    - docker tag local-image:$CIRCLE_SHA1 tutum.co/iops/api-accounts:$CIRCLE_SHA1
+    - docker push tutum.co/iops/api-accounts:$CIRCLE_SHA1
