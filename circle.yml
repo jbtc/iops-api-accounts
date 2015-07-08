@@ -1,12 +1,12 @@
 machine:
   services:
     - docker
-    - mongodb
 
 deployment:
   hub:
     branch: master
     commands:
-      - docker login tutum.co -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker tag local-image:tagname tutum.co/iops/iops-api-accounts:latest
-      - docker push tutum.co/iops/iops-api-accounts:tagname
+      - sudo pip install tutum
+      - tutum login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - tutum build ./iops-api-accounts -t tutum.co/iops/iops-api-accounts:latest
+      - tutum push tutum.co/iops/iops-api-accounts:tagname
