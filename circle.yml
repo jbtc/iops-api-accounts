@@ -3,10 +3,6 @@ machine:
     - docker
     - mongodb
 
-dependencies:
-  override:
-    - npm install --dev
-
 deployment:
   hub:
     branch: master

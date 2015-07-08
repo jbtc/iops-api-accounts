@@ -1,5 +1,7 @@
 # Accounts API
 The Account's API handles the account, users, and customizations.
+
+[![Circle CI](https://circleci.com/gh/jbtc/iops-api-accounts/tree/master.svg?style=svg&circle-token=34a0dc1834d38db6acebe9eb5e2612dec32d30aa)](https://circleci.com/gh/jbtc/iops-api-accounts/tree/master)
  
 # Routes
 Overview of routes and a brief description of their intended behavior
