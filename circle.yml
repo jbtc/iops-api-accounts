@@ -2,11 +2,14 @@ machine:
   services:
     - docker
 
+dependencies:
+  pre:
+    - sudo pip install tutum
+    - tutum build -t tutum.co/iops/iops-api-accounts:$CIRCLE_SHA1 .
+
 deployment:
   hub:
     branch: master
     commands:
-      - sudo pip install tutum
       - tutum login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - tutum build ./iops-api-accounts -t tutum.co/iops/iops-api-accounts:latest
-      - tutum push tutum.co/iops/iops-api-accounts:tagname
+      - tutum push tutum.co/iops/iops-api-accounts:$CIRCLE_SHA1
