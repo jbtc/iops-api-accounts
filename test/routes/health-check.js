@@ -1,10 +1,11 @@
 'use strict';
 
 var expect = require('chai').expect;
+var app = require('../../lib');
 
 require('../../config');
 var request = require('supertest');
-request = request('http://iops-api-accounts.ka');
+request = request(app);
 
 describe('/v1/system/status', function() {
 
