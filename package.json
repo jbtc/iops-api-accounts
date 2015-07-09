@@ -26,6 +26,7 @@
   "dependencies": {
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
+    "http-proxy": "^1.11.1",
     "mongojs": "^1.0.2",
     "nconf": "^0.7.1",
     "nodemon": "^1.3.7"

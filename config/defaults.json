@@ -1,5 +1,6 @@
 {
   "PORT": 4000,
   "ACCOUNTS_MONGODB_URI": "localhost/accounts",
-  "NODE_ENV": "development"
+  "NODE_ENV": "development",
+  "IOPS_ACCOUNT_PROXY_URL": "accounts.iops.com"
 }
