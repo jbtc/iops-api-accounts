@@ -8,6 +8,7 @@ dependencies:
 
 deployment:
   production:
+    branch: master
     commands:
       - docker build -t tutum.co/iops/api-accounts:$CIRCLE_SHA1 .
       - docker push tutum.co/iops/api-accounts
