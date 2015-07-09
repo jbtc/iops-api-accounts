@@ -28,4 +28,17 @@ describe('AccountsManager', function() {
 
   });
 
+  describe('#find', function() {
+
+    it('should be empty by default', function(done) {
+      manager.find()
+        .then(function(accounts) {
+          expect(accounts).to.be.eql([]);
+          done();
+        })
+        .catch(done);
+    });
+
+  });
+
 });
