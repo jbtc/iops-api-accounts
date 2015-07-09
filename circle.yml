@@ -2,10 +2,6 @@ machine:
   services:
     - docker
 
-dependencies:
-  override:
-    - npm install --dev
-
 deployment:
   production:
     branch: master
