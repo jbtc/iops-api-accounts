@@ -6,7 +6,8 @@ dependencies:
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS tutum.co
 
-test:
-  post:
-    - docker build -t tutum.co/iops/api-accounts:$CIRCLE_SHA1 .
-    - docker push tutum.co/iops/api-accounts
+deployment:
+  production:
+    commands:
+      - docker build -t tutum.co/iops/api-accounts:$CIRCLE_SHA1 .
+      - docker push tutum.co/iops/api-accounts
