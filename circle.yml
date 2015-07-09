@@ -2,6 +2,10 @@ machine:
   services:
     - docker
 
+notify:
+  webhooks:
+    - https://dashboard.tutum.co/api/v1/service/91073d20-cf32-4762-a9cd-44a05e5a1dd1/trigger/fae14708-175c-44bd-91b4-b9e9968bb7c5/call/
+
 deployment:
   production:
     branch: master
