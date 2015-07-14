@@ -20,19 +20,25 @@
   "homepage": "https://bitbucket.org/jbt-iops/iops-api-accounts#readme",
   "devDependencies": {
     "chai": "^3.0.0",
-    "mocha": "^2.2.5",
-    "supertest": "^1.0.1"
+    "mocha": "^2.2.5"
   },
   "dependencies": {
     "assert-plus": "^0.1.5",
+    "blipp": "^2.2.1",
     "bluebird": "^2.9.32",
     "body-parser": "^1.13.2",
-    "express": "^4.13.1",
+    "boom": "^2.8.0",
+    "good": "^6.3.0",
+    "good-console": "^5.0.2",
+    "hapi": "^8.8.0",
+    "hapi-routes-status": "^2.0.1",
+    "joi": "^6.5.0",
     "le_node": "^1.0.8",
     "lodash": "^3.10.0",
+    "lout": "^6.2.3",
     "mongojs": "^1.0.2",
     "nconf": "^0.7.1",
-    "shortid": "^2.2.2",
-    "tv4": "^1.1.12"
+    "ratify": "^0.8.2",
+    "shortid": "^2.2.2"
   }
 }

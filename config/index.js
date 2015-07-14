@@ -14,7 +14,6 @@ nconf.defaults({
 });
 
 var environment = nconf.get('NODE_ENV');
-console.log(environment);
 
 var configFile;
 if (environment === 'testing') {

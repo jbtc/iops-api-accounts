@@ -1,4 +1,4 @@
 {
-  "PORT": "",
+  "PORT": 9000,
   "ACCOUNTS_MONGODB_URI": "mongodb://docker.dev:32768/testing-accounts"
 }
