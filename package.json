@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "assert-plus": "^0.1.5",
+    "bcrypt": "^0.8.3",
     "blipp": "^2.2.1",
     "bluebird": "^2.9.32",
     "body-parser": "^1.13.2",
@@ -32,6 +33,7 @@
     "good-console": "^5.0.2",
     "hapi": "^8.8.0",
     "hapi-routes-status": "^2.0.1",
+    "hat": "0.0.3",
     "joi": "^6.5.0",
     "le_node": "^1.0.8",
     "lodash": "^3.10.0",
