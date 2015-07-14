@@ -47,14 +47,14 @@ describe('/v1/accounts', function() {
 
   });
 
-  describe('POST: /v1/accounts', function() {
-    describe('bad request', function() {
-
-      it('should return a 400', function(done) {
-        request.post('/v1/accounts')
-          .expect(400, done);
-      });
-
-    });
-  });
+  //describe('POST: /v1/accounts', function() {
+  //  describe('bad request', function() {
+  //
+  //    it('should return a 400', function(done) {
+  //      request.post('/v1/accounts')
+  //        .expect(400, done);
+  //    });
+  //
+  //  });
+  //});
 });
