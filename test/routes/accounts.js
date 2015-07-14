@@ -10,7 +10,6 @@ require('../../config');
 
 describe('/v1/accounts', function() {
 
-
   describe('GET /v1/accounts', function() {
 
     before(function(done) {
@@ -52,7 +51,11 @@ describe('/v1/accounts', function() {
       server.inject(options, function(response) {
         var result = response.result;
         expect(response.statusCode).to.be.eql(200);
-        expect(result).to.be.eql([account]);
+        expect(result).to.be.eql([{
+          id: account._id.toString(),
+          name: 'JBT Testing',
+          active: true
+        }]);
         done();
       });
     });
@@ -121,31 +124,34 @@ describe('/v1/accounts', function() {
         }
       });
     });
-    var account;
-    before(function(done) {
-      account = {
-        name: 'JBT Testing',
-        token: ShortId.generate(),
-        active: true
-      };
-      db.collection('accounts').save(account, function(err, account) {
-        if (err) return done(err);
-        if (account) {
-          return done();
-        }
-      });
-    });
 
-
-    it('should return an array of accounts', function(done) {
+    it('should fail with status code 400', function(done) {
       var options = {
         method: "POST",
         url: "/v1/accounts",
         payload: {}
       };
       server.inject(options, function(response) {
-        var result = response.result;
         expect(response.statusCode).to.be.eql(400);
+        done();
+      });
+    });
+
+    it('should succeed', function(done) {
+      var options = {
+        method: "POST",
+        url: "/v1/accounts",
+        payload: {
+          name: "Testing Testing Testing"
+        }
+      };
+      server.inject(options, function(response) {
+        var result = response.result;
+        expect(response.statusCode).to.be.eql(200);
+        expect(result.name).to.be.eql("Testing Testing Testing");
+        expect(result.token).to.be.ok;
+        expect(result.active).to.be.true;
+
         done();
       });
     });
@@ -247,6 +253,5 @@ describe('/v1/accounts', function() {
       });
     });
   });
-
 
 });
