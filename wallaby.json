@@ -9,5 +9,8 @@
   ],
   "env": {
     "type": "node"
+  },
+  "params": {
+    "env": "NODE_ENV=testing"
   }
 }

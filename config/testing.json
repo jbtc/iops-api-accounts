@@ -1,5 +1,4 @@
 {
   "PORT": "",
-  "ACCOUNTS_MONGODB_URI": "localhost/testing-accounts",
-  "NODE_ENV": "testing"
+  "ACCOUNTS_MONGODB_URI": "mongodb://docker.dev:32768/testing-accounts"
 }

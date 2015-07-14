@@ -1,0 +1,24 @@
+{
+  "title": "Account",
+  "description": "An Account",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier of an account"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the account",
+      "minLength": 2
+    },
+    "active": {
+      "type": "boolean",
+      "description": "Determines if an account is active or not",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

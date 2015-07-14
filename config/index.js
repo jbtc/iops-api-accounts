@@ -9,7 +9,12 @@ nconf
   .argv()
   .env();
 
+nconf.defaults({
+  NODE_ENV: 'testing'
+});
+
 var environment = nconf.get('NODE_ENV');
+console.log(environment);
 
 var configFile;
 if (environment === 'testing') {
@@ -17,9 +22,8 @@ if (environment === 'testing') {
 } else {
   configFile = path.resolve(__dirname, './defaults.json');
 }
-
 nconf.file(configFile);
 
 module.exports = nconf;
-module.exports.db = mongojs(nconf.get('ACCOUNTS_MONGODB_URI'));
+module.exports.db = mongojs(nconf.get('ACCOUNTS_MONGODB_URI'), []);
 module.exports.logger = logger;

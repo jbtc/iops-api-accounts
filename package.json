@@ -24,12 +24,15 @@
     "supertest": "^1.0.1"
   },
   "dependencies": {
+    "assert-plus": "^0.1.5",
     "bluebird": "^2.9.32",
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
-    "http-proxy": "^1.11.1",
     "le_node": "^1.0.8",
+    "lodash": "^3.10.0",
     "mongojs": "^1.0.2",
-    "nconf": "^0.7.1"
+    "nconf": "^0.7.1",
+    "shortid": "^2.2.2",
+    "tv4": "^1.1.12"
   }
 }
