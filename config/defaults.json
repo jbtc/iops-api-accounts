@@ -1,5 +1,5 @@
 {
   "PORT": 4000,
   "ACCOUNTS_MONGODB_URI": "mongodb://docker.dev:32768/accounts",
-  "IOPS_ACCOUNT_PROXY_URL": "accounts.iops.com"
+  "ACCOUNTS_SECRET_KEY": "uja4#swXg7,{C3=o*3AaH*v#orLreiJY"
 }

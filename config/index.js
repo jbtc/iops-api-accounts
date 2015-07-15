@@ -25,5 +25,4 @@ nconf.file(configFile);
 
 module.exports = nconf;
 module.exports.db = mongojs(nconf.get('ACCOUNTS_MONGODB_URI'), []);
-console.log(nconf.get('ACCOUNTS_MONGODB_URI'));
 module.exports.logger = logger;

@@ -24,6 +24,12 @@ server.register([
     register: require('ratify')
   },
   {
+    register: require('tv')
+  },
+  {
+    register: require('hapi-auth-jwt2')
+  },
+  {
     register: require('good'),
     options: {
       opsInterval: 5000,
@@ -35,6 +41,25 @@ server.register([
   }
 ], function(err) {
   if (err) throw err;
+
+  var secretKey = config.get('ACCOUNTS_SECRET_KEY');
+  //server.auth.strategy('jwt', 'jwt', 'try', {
+  //  key: secretKey,
+  //  validateFunc: function(decoded, request, callback) {
+  //
+  //    // do your checks to see if the person is valid
+  //    //if (!people[decoded.id]) {
+  //    //  return callback(null, false);
+  //    //}
+  //    //else {
+  //    //  return callback(null, true);
+  //    //}
+  //
+  //    return callback(null, false);
+  //  }
+  //});
+
+
   if (!module.parent) {
     server.start(function() {
       console.log("Server started", server.info.uri);

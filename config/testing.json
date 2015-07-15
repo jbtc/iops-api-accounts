@@ -1,4 +1,5 @@
 {
   "PORT": 9000,
-  "ACCOUNTS_MONGODB_URI": "mongodb://docker.dev:32768/testing-accounts"
+  "ACCOUNTS_MONGODB_URI": "mongodb://docker.dev:32768/testing-accounts",
+  "ACCOUNTS_SECRET_KEY": "uja4#swXg7,{C3=o*3AaH*v#orLreiJY"
 }
