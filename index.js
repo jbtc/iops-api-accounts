@@ -17,11 +17,10 @@ server.register([
     register: require('hapi-routes-status')
   },
   {
-    register: require('blipp'),
-    options: {}
+    register: require('blipp')
   },
   {
-    register: require('ratify')
+    register: require('lout')
   },
   {
     register: require('tv')
