@@ -7,8 +7,8 @@ COPY . /src
 WORKDIR /src
 
 RUN npm install \
-    npm install nodemon -g
+    npm install forever -g
 
 EXPOSE 4000
 
-CMD ["nodemon", "/src/index.js"]
+CMD ["forever", "start", "index.js"]
