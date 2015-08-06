@@ -10,4 +10,4 @@ RUN npm install && npm install forever -g
 
 EXPOSE 4000
 
-CMD ["forever", "start", "--killSignal=SIGTERM --minUptime=10 --spinSleepTime=10", "index.js"]
+CMD ["forever", "start", "--killSignal=SIGTERM", "--minUptime=10", "--spinSleepTime=10", "index.js"]
