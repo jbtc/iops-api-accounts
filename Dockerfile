@@ -6,9 +6,8 @@ COPY . /src
 
 WORKDIR /src
 
-RUN npm install \
-    npm install forever -g
+RUN npm install && npm install forever -g
 
 EXPOSE 4000
 
-CMD ["forever", "start", "index.js"]
+CMD ["forever", "start", "--killSignal=SIGTERM --minUptime=10 --spinSleepTime=10", "index.js"]
