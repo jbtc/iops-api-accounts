@@ -5,10 +5,11 @@
     "index.js"
   ],
   "tests": [
-    "test/**/*"
+    "test/**/*.tests.js"
   ],
   "env": {
-    "type": "node"
+    "type": "node",
+    "runner": "/Users/tylergarlick/.nvm/versions/io.js/v3.0.0/bin/node"
   },
   "params": {
     "env": "NODE_ENV=testing"

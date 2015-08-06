@@ -1,12 +1,14 @@
-FROM node:latest
+FROM iojs:latest
 
 MAINTAINER Tyler Garlick <tjgarlick@gmail.com>
 
 COPY . /src
 
-RUN cd /src; npm install; npm install nodemon -g
+WORKDIR /src
+
+RUN npm install \
+    npm install nodemon -g
 
 EXPOSE 4000
-EXPOSE 80
 
 CMD ["nodemon", "/src/index.js"]
