@@ -7,7 +7,8 @@ var router = require('./lib/routes');
 var server = new Hapi.Server();
 server.connection({
   port: config.get('PORT'),
-  labels: ['api']
+  router: { isCaseSensitive: false, stripTrailingSlash: true },
+  cors: { origin: '*', matchOrigin: false, additionalHeaders: ['Access-Control-Allow-Origin']}
 });
 
 server.route(router);
