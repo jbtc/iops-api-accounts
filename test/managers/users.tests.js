@@ -1,10 +1,10 @@
 'use strict';
 
-let expect = require('chai').expect
-  , UsersManager = require('../../lib/managers/users')
-  , Promise = require('bluebird')
-  , db = Promise.promisifyAll(require('../../config').db)
-  , users = Promise.promisifyAll(db.collection('users'));
+let expect = require('chai').expect;
+let UsersManager = require('../../lib/managers/users');
+let Promise = require('bluebird');
+let db = Promise.promisifyAll(require('../../config').db);
+let users = Promise.promisifyAll(db.collection('users'));
 
 
 describe('Users Manager', function() {

@@ -1,10 +1,10 @@
 'use strict';
 //
-var expect = require('chai').expect;
-var server = require('../../');
-var config = require('../../config');
-var db = config.db;
-var Hat = require('hat');
+let expect = require('chai').expect;
+let server = require('../../');
+let config = require('../../config');
+let db = config.db;
+let Hat = require('hat');
 
 require('../../config');
 

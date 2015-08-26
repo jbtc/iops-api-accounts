@@ -1,8 +1,8 @@
 'use strict';
 
-var Hapi = require('hapi');
-var config = require('./config');
-var router = require('./lib/routes');
+let Hapi = require('hapi');
+let config = require('./config');
+let router = require('./lib/routes');
 
 var server = new Hapi.Server({
   connections: {
@@ -64,12 +64,17 @@ server.register([
   //  }
   //});
 
-
-  if (!module.parent) {
-    server.start(function() {
-      console.log("Server started", server.info.uri);
+  config.db.setup()
+    .then(function() {
+      if (!module.parent) {
+        server.start(function() {
+          console.log("Server started", server.info.uri);
+        });
+      }
+    })
+    .catch(function(err) {
+      console.error(err);
     });
-  }
 });
 
 
