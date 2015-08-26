@@ -1,8 +1,8 @@
 'use strict';
 
-let logger = require('./logger')
-  , env = require('./env')
-  , db = require('./db');
+let logger = require('./logger');
+let env = require('./env');
+let db = require('./db');
 
 module.exports = env;
 module.exports.db = db;
