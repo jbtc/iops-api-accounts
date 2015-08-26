@@ -4,6 +4,7 @@ machine:
   services:
     - docker
     - mongodb
+    - redis
 
 notify:
   webhooks:
