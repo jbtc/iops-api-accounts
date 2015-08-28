@@ -34,7 +34,10 @@
     "hapi": "^8.8.0",
     "hapi-auth-jwt2": "^4.5.0",
     "hapi-routes-status": "^2.0.1",
+    "hapi-swaggered": "^2.3.0",
+    "hapi-swaggered-ui": "^2.0.1",
     "hat": "0.0.3",
+    "inert": "^3.0.1",
     "ioredis": "^1.6.1",
     "joi": "^6.5.0",
     "jsonwebtoken": "^5.0.2",
@@ -45,6 +48,7 @@
     "mongojs": "^1.0.2",
     "nconf": "^0.7.1",
     "shortid": "^2.2.2",
-    "tv": "^4.1.0"
+    "tv": "^4.1.0",
+    "vision": "^3.0.0"
   }
 }

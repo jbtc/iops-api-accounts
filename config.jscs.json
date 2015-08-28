@@ -38,9 +38,7 @@
     "requireSpacesInFunction": {
         "beforeOpeningCurlyBrace": true
     },
-    "requireTrailingComma": {
-        "ignoreSingleLine": true
-    },
+    "requireTrailingComma": false,
     "validateIndentation": 2,
     "validateLineBreaks": "LF",
     "validateQuoteMarks": "'"
