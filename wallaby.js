@@ -12,7 +12,7 @@ module.exports = function() {
     ],
     env: {
       type: 'node',
-      runner: '/Users/tylergarlick/.nvm/versions/io.js/v3.0.0/bin/node'
+      runner: 'node'
     },
     params: {
       env: 'NODE_ENV=testing'
