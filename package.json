@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "mocha test --recursive"
+    "test": "mocha test --recursive",
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- -u exports -R spec --recursive test --compilers js:babel/register",
+    "lint": "esw --watch"
   },
   "repository": {
     "type": "git",
@@ -20,7 +22,9 @@
   "homepage": "https://bitbucket.org/jbt-iops/iops-api-accounts#readme",
   "devDependencies": {
     "babel": "^5.8.23",
-    "chai": "^3.0.0",
+    "code": "^1.5.0",
+    "eslint": "^1.6.0",
+    "eslint-watch": "^2.1.2",
     "mocha": "^2.2.5"
   },
   "dependencies": {
@@ -33,6 +37,7 @@
     "good-console": "^5.0.2",
     "hapi": "^9.3.1",
     "hapi-async-handler": "^1.0.3",
+    "hapi-auth-jwt2": "^5.1.1",
     "hapi-router": "^3.4.0",
     "hapi-swaggered": "^2.4.0",
     "hapi-swaggered-ui": "^2.1.0",
@@ -42,6 +47,7 @@
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "nconf": "^0.7.2",
+    "redis": "^2.2.3",
     "rejoice": "^2.2.1",
     "rethinkdbdash": "^2.1.9",
     "tv": "^4.1.1",

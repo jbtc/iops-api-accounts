@@ -76,7 +76,7 @@ export default [
             let result = yield Managers.Accounts.byId(request.params.id).run();
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -156,7 +156,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -181,7 +181,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -206,7 +206,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -231,7 +231,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -256,7 +256,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -281,7 +281,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -306,7 +306,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }
@@ -331,7 +331,7 @@ export default [
             let result = yield Promise.resolve([]);
             if (!result) return reply(Boom.notFound('Account not found'));
             return reply(result);
-          } catch (e) { return reply(result);}
+          } catch (e) { return reply(e);}
 
         })
       }

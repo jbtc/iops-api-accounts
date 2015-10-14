@@ -2,13 +2,25 @@
   "ecmaFeatures": {
     "blockBindings": true,
     "forOf": true,
-    "jsx": true
+    "modules": true
   },
   "rules": {
-    "semi": 2
+    "camelcase": 2,
+    "eol-last": 2,
+    "no-trailing-spaces": 2,
+    "quotes": [2, "single", "avoid-escape"],
+    "no-unused-vars": 2,
+    "no-underscore-dangle": 0,
+    "semi": [2, "always"],
+    "no-undef": 2,
+    "no-use-before-define": 2,
+    "block-scoped-var": 2,
+    "space-in-parens": [2, "never"],
+    "object-curly-spacing": [2, "always"]
   },
   "env": {
     "node": true,
+    "amd": true,
     "es6": true
   }
 }

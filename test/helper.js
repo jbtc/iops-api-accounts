@@ -1,5 +1,5 @@
 'use strict';
 
-import chai from 'chai';
+import Code from 'code';
 
-global.expect = chai.expect;
+global.expect = Code.expect;

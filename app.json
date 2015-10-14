@@ -10,10 +10,16 @@
     },
     "good": {
       "requestHeaders": true,
-      "reporters": [{
-        "reporter": "good-console",
-        "events": { "response": "*", "log": "*", "error": "*" }
-      }]
+      "reporters": [
+        {
+          "reporter": "good-console",
+          "events": {
+            "response": "*",
+            "log": "*",
+            "error": "*"
+          }
+        }
+      ]
     },
     "hapi-swaggered": {
       "tags": {},
@@ -26,6 +32,7 @@
     "hapi-swaggered-ui": {
       "title": "iOPS Accounts Api",
       "path": "/docs"
-    }
+    },
+    "hapi-auth-jwt2": {}
   }
 }
