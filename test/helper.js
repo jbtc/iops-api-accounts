@@ -1,5 +1,3 @@
 'use strict';
 
-import Code from 'code';
-
-global.expect = Code.expect;
+global.expect = require('code').expect;

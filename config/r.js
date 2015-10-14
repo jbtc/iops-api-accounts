@@ -1,16 +1,43 @@
 'use strict';
 
-let rethink = require('rethinkdbdash');
+let Promise = require('bluebird');
+let _ = require('lodash');
+let RethinkDb = require('rethinkdbdash');
+let configurator = require('./configurator');
 
-let r = rethink({
-  db: 'iops_accounts_testing',
-  servers: [
-    { host: 'rethinkdb-master-1.iops.cont.tutum.io', port: 28015 },
-    { host: 'rethinkdb-slave-01-1.iops.cont.tutum.io', port: 32787 },
-    { host: 'rethinkdb-slave-01-2.iops.cont.tutum.io', port: 32790 },
-    { host: 'rethinkdb-slave-01-3.iops.cont.tutum.io', port: 32793 },
-    { host: 'rethinkdb-slave-01-4.iops.cont.tutum.io', port: 32796 }
-  ]
+let verifyDb = (db) => {
+  return Promise.resolve(r.dbList().run()
+    .then((dbs) => {
+      if (!_.contains(dbs, db)) {
+        return r.dbCreate(db).run();
+      }
+    }));
+};
+
+let verifyTables = (db, tables) => {
+  return Promise.resolve(r.db(db).tableList().run()
+    .then((existing) => {
+      let newTables = _.difference(existing, tables);
+      if (!_.isEmpty(newTables)) {
+        let promises = [];
+        for (let t of newTables) {
+          promises.push(r.db(db).tableCreate(t).run());
+        }
+        return Promise.all(promises);
+      }
+      return Promise.resolve();
+    }));
+};
+
+let config = configurator.get('rethinkdb');
+let r = RethinkDb({
+  db: config.db,
+  servers: config.servers
 });
 
-export default r;
+module.exports = r;
+
+module.exports.verify = (db, tables) => {
+  return verifyDb(db).then(verifyTables(db, tables));
+};
+

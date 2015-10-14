@@ -1,9 +1,5 @@
 'use strict';
 
-require('babel/register')({
-  sourceMaps: 'inline'
-});
-
 var Glue = require('glue');
 var app = require('./app.json');
 
@@ -15,5 +11,3 @@ Glue.compose(app, { relativeTo: __dirname }, function (err, server) {
     console.log('Server started on: ' + server.info.uri);
   });
 });
-
-

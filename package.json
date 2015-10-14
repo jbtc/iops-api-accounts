@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node .",
     "test": "mocha test --recursive",
-    "coverage": "istanbul cover node_modules/.bin/_mocha -- -u exports -R spec --recursive test --compilers js:babel/register",
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- -u exports -R spec --recursive test",
     "lint": "esw --watch"
   },
   "repository": {

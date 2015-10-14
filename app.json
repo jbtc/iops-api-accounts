@@ -33,6 +33,8 @@
       "title": "iOPS Accounts Api",
       "path": "/docs"
     },
-    "hapi-auth-jwt2": {}
+    "hapi-auth-jwt2": {},
+    "./plugins/configuration": {},
+    "./plugins/rethinkdb": {}
   }
 }

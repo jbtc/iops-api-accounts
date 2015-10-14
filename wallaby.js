@@ -1,7 +1,5 @@
 'use strict';
 
-var babel = require('babel');
-
 module.exports = function (wallaby) {
   return {
     files: [
@@ -24,16 +22,16 @@ module.exports = function (wallaby) {
     bootstrap: function () {
       require('./test/helper');
     },
-    compilers: {
-      '**/*.js': wallaby.compilers.babel({
-        babel: babel,
-        // other babel options
-        stage: 0    // https://babeljs.io/docs/usage/experimental/
-      })
-    },
+    //compilers: {
+    //  '**/*.js': wallaby.compilers.babel({
+    //    babel: babel,
+    //    // other babel options
+    //    stage: 0    // https://babeljs.io/docs/usage/experimental/
+    //  })
+    //},
 
     teardown: function () {
-      require('./config').getPoolMaster().drain();
+      require('./config/r').getPoolMaster().drain();
     }
   };
 };

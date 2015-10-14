@@ -1,12 +1,12 @@
 'use strict';
 
-import Promise from 'bluebird';
-import Joi from 'joi';
-import Boom from 'boom';
-import Managers from '../lib/managers';
-import SCHEMAS from '../lib/schemas';
+let Promise = require('bluebird');
+let Joi = require('joi');
+let Boom = require('boom');
+let Managers = require('../lib/managers');
+let SCHEMAS = require('../lib/schemas');
 
-export default [
+module.exports = [
   {
     path: '/v1/accounts',
     method: 'GET',
