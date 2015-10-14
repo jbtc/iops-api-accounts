@@ -1,7 +1,0 @@
-{
-  "PORT": 4000,
-  "ACCOUNTS_MONGODB_URI": "mongodb://docker.dev/accounts",
-  "ACCOUNTS_SECRET_KEY": "uja4#swXg7,{C3=o*3AaH*v#orLreiJY",
-  "ACCOUNTS_REDIS_HOST": "docker.dev",
-  "ACCOUNTS_REDIS_PORT": 32768
-}
