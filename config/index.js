@@ -1,9 +1,16 @@
 'use strict';
 
-let logger = require('./logger');
-let env = require('./env');
-let db = require('./db');
+let Nconf = require('nconf');
+let Path = require('path');
+let RethinkDB = require('rethinkdbdash');
 
-module.exports = env;
-module.exports.db = db;
-module.exports.logger = logger;
+Nconf.argv()
+     .env()
+     .file(Path.resolve(__dirname, './defaults.json'));
+
+
+let dbConfig = Nconf.get('rethinkdb');
+
+let r = RethinkDB({ db: dbConfig.db, servers: dbConfig.servers });
+
+module.exports = { r, nconf: Nconf };

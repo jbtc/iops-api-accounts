@@ -1,17 +1,26 @@
 'use strict';
 
+let RethinkDb = require('rethinkdbdash');
 let Promise = require('bluebird');
-let async = Promise.coroutine;
+let _ = require('lodash');
 
-let mongojs = require('mongojs');
-let env = require('./env');
+module.exports = {
 
-let db = Promise.promisifyAll(mongojs(env.get('ACCOUNTS_MONGODB_URI'), []));
+  initialize(name, servers) {
+    return RethinkDb({ db: name, servers });
+  },
 
-
-module.exports = db;
-module.exports.setup = async(function* () {
-  let users = Promise.promisifyAll(db.collection('users'));
-  yield users.ensureIndexAsync({ email: 1 }, { unique: true });
-});
-
+  setupTables(r, dbName, tables) {
+    return Promise.resolve(r.db(dbName).tableList().run())
+      .then(existing => {
+        let newTables = _.difference(existing, tables);
+        if (!_.isEmpty(newTables)) {
+          let promises = [];
+          for (let t of newTables) {
+            promises.push(r.db(db).tableCreate(t).run());
+          }
+          return Promise.all(promises);
+        }
+      });
+  }
+};

@@ -1,99 +1,69 @@
 'use strict';
 
-let Hapi = require('hapi');
-let config = require('./config');
-let router = require('./lib/routes');
+const Hapi = require('hapi');
+let server = new Hapi.Server();
 
-var server = new Hapi.Server({
-  connections: {
-    routes: {
-      cors: { origin: ['*'], matchOrigin: false, additionalHeaders: ['Access-Control-Allow-Origin'] },
-    },
-  },
-});
-server.connection({
-  port: config.get('PORT'),
-  router: { isCaseSensitive: false, stripTrailingSlash: true },
-  labels: ['api'],
+server.connection({ port: process.env.PORT || 3000 });
+
+server.route({
+  path: '/',
+  method: 'GET',
+  handler: (request, reply) => {
+    reply.redirect('/docs');
+  }
 });
 
-server.route(router);
-
-let plugins = [
+server.register([
+  require('blipp'),
   require('inert'),
   require('vision'),
-  require('hapi-routes-status'),
-  require('blipp'),
   require('tv'),
-  require('hapi-auth-jwt2'),
-
+  require('hapi-async-handler'),
+  require('./api/accounts'),
+  require('./api/users'),
+  require('./api/claims'),
+  //{
+  //  register: require('hapi-router'),
+  //  options: { routes: 'routes/**/*' }
+  //},
   {
     register: require('good'),
     options: {
-      opsInterval: 5000,
-      reporters: [{
-        reporter: require('good-console'),
-        events: { log: '*', response: '*', error: '*' },
-      }],
-    },
+      requestHeaders: true,
+      reporters: [
+        {
+          reporter: 'good-console',
+          events: { response: '*', log: '*', error: '*' }
+        }
+      ]
+    }
   },
-
   {
     register: require('hapi-swaggered'),
     options: {
-      tags: {},
-      info: {
-        title: 'iOPS Accounts Api',
-        description: 'Account management for iOPS',
-        version: '1.0.0',
-      },
-    },
+      tags: {}, info: {
+        title: 'iOps Accounts API',
+        description: 'Account management',
+        version: require('./package').version
+      }
+    }
   },
-
   {
     register: require('hapi-swaggered-ui'),
     options: {
-      title: 'iOPS Accounts Api',
-      path: '/docs',
-    },
-  },
+      title: 'iOps Accounts API',
+      path: '/docs'
+    }
+  }
+], err => {
+  if (err) throw err;
 
-];
-
-server.register(plugins, { select: 'api' }, function(err) {
-  if (err) {
-    throw err;
+  if (!module.parent) {
+    server.start(function () {
+      console.log("Server started", server.info.uri);
+    });
   }
 
-  var secretKey = config.get('ACCOUNTS_SECRET_KEY');
-  //server.auth.strategy('jwt', 'jwt', 'try', {
-  //  key: secretKey,
-  //  validateFunc: function(decoded, request, callback) {
-  //
-  //    // do your checks to see if the person is valid
-  //    //if (!people[decoded.id]) {
-  //    //  return callback(null, false);
-  //    //}
-  //    //else {
-  //    //  return callback(null, true);
-  //    //}
-  //
-  //    return callback(null, false);
-  //  }
-  //});
-
-  config.db.setup()
-    .then(function() {
-      if (!module.parent) {
-        server.start(function() {
-          console.log('Server started', server.info.uri);
-        });
-      }
-    })
-    .catch(function(err) {
-      console.error(err);
-    });
 });
-
 
 module.exports = server;

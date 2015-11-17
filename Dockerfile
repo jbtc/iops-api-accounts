@@ -1,4 +1,4 @@
-FROM iojs:latest
+FROM node:4.2
 
 MAINTAINER Tyler Garlick <tjgarlick@gmail.com>
 

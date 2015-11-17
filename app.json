@@ -1,0 +1,38 @@
+{
+  "plugins": {
+    "blipp": {},
+    "inert": {},
+    "vision": {},
+    "tv": {},
+    "hapi-async-handler": {},
+    "hapi-router": {
+      "routes": "routes/**/*.js"
+    },
+    "good": {
+      "requestHeaders": true,
+      "reporters": [
+        {
+          "reporter": "good-console",
+          "events": {
+            "response": "*",
+            "log": "*",
+            "error": "*"
+          }
+        }
+      ]
+    },
+    "hapi-swaggered": {
+      "tags": {},
+      "info": {
+        "title": "iOPS Accounts Api",
+        "description": "Account management for iOPS",
+        "version": "1.0.0"
+      }
+    },
+    "hapi-swaggered-ui": {
+      "title": "iOPS Accounts Api",
+      "path": "/docs"
+    },
+    "hapi-auth-jwt2": {},
+  }
+}
