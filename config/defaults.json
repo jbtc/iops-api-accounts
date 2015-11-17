@@ -1,4 +1,4 @@
 {
   "RDB_DB": "iops_accounts_testing",
-  "RDB_SERVER_HOST": "rethinkdb-master.iops.svc.tutum.io"
+  "RDB_SERVER_HOST": "localhost"
 }

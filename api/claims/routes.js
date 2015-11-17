@@ -58,7 +58,7 @@ module.exports = [
             if (accountId) {
               query = query.filter({ accountId });
             }
-            let result = yield query.orderBy(db.r.desc('name')).run();
+            let result = yield query.orderBy('name').run();
 
             return reply(result);
           } catch (e) {

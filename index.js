@@ -19,13 +19,11 @@ server.register([
   require('vision'),
   require('tv'),
   require('hapi-async-handler'),
+  require('./api/cache'),
   require('./api/accounts'),
   require('./api/users'),
   require('./api/claims'),
-  //{
-  //  register: require('hapi-router'),
-  //  options: { routes: 'routes/**/*' }
-  //},
+  require('./api/roles'),
   {
     register: require('good'),
     options: {
