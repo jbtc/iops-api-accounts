@@ -1,11 +1,14 @@
 'use strict';
 
-module.exports = function (wallaby) {
+module.exports = function () {
   return {
     files: [
+      'index.js',
+      'api/**/*',
       'config/**/*',
       'lib/**/*',
-      'routes/**/*',
+      //'routes/**/*',
+      'plugins/**/*',
       'test/**/*',
       { pattern: 'test/**/*.test.js', ignore: true }
     ],
@@ -14,14 +17,12 @@ module.exports = function (wallaby) {
     ],
     env: {
       type: 'node',
-      runner: 'node'
+      runner: '/usr/local/bin/node'
     },
     params: {
       env: 'NODE_ENV=testing'
     },
-    bootstrap: function () {
-      require('./test/helper');
-    },
+
     //compilers: {
     //  '**/*.js': wallaby.compilers.babel({
     //    babel: babel,
@@ -31,7 +32,7 @@ module.exports = function (wallaby) {
     //},
 
     teardown: function () {
-      require('./config/r').getPoolMaster().drain();
+      require('./config').r.getPoolMaster().drain();
     }
   };
 };

@@ -3,7 +3,6 @@
 let Promise = require('bluebird');
 let Joi = require('joi');
 let Boom = require('boom');
-let Managers = require('../lib/managers');
 let SCHEMAS = require('../lib/schemas');
 
 module.exports = [

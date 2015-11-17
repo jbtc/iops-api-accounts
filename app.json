@@ -34,7 +34,5 @@
       "path": "/docs"
     },
     "hapi-auth-jwt2": {},
-    "./plugins/configuration": {},
-    "./plugins/rethinkdb": {}
   }
 }
