@@ -8,9 +8,11 @@ Nconf.argv()
      .env()
      .file(Path.resolve(__dirname, './defaults.json'));
 
-
-let dbConfig = Nconf.get('rethinkdb');
-
-let r = RethinkDB({ db: dbConfig.db, servers: dbConfig.servers });
+let r = RethinkDB({
+  db: Nconf.get('RDB_DB'),
+  servers: [
+    { host: Nconf.get('RDB_SERVER_HOST') }
+  ]
+});
 
 module.exports = { r, nconf: Nconf };

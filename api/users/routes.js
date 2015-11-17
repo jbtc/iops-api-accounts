@@ -27,6 +27,7 @@ const User = {
 
 const UserFields = ['id', 'firstName', 'lastName', 'email', 'accounts', 'claims', 'isActive', 'createdAt', 'updatedAt'];
 
+
 let hashPassword = (user) => {
   return new Promise((resolve, reject) => {
     Bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
