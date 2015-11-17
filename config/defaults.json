@@ -1,10 +1,4 @@
 {
-  "rethinkdb": {
-    "db": "iops_accounts_testing",
-    "servers": [{ "host": "rethinkdb-master.iops.svc.tutum.io", "port": "28015" }],
-    "tables": [
-      "accounts",
-      "users"
-    ]
-  }
+  "RDB_DB": "iops_accounts_testing",
+  "RDB_SERVER_HOST": "rethinkdb-master.iops.svc.tutum.io"
 }
