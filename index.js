@@ -1,7 +1,19 @@
 'use strict';
 
 const Hapi = require('hapi');
-let server = new Hapi.Server();
+let server = new Hapi.Server({
+  connections: {
+    router: {
+      isCaseSensitive: false,
+      stripTrailingSlash: true
+    },
+    routes: {
+      cors: {
+        origin: ['*']
+      }
+    }
+  }
+});
 
 server.connection({ port: process.env.PORT || 3000 });
 
