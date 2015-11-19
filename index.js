@@ -31,11 +31,17 @@ server.register([
   require('vision'),
   require('tv'),
   require('hapi-async-handler'),
-  require('./api/cache'),
   require('./api/accounts'),
   require('./api/users'),
   require('./api/claims'),
   require('./api/roles'),
+  {
+    register: require('./api/cache'),
+    options: {
+      host: process.env.REDIS_HOST || 'docker.dev',
+      port: process.env.REDIS_PORT || '6379'
+    }
+  },
   {
     register: require('good'),
     options: {
