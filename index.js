@@ -38,8 +38,8 @@ server.register([
   {
     register: require('./api/cache'),
     options: {
-      host: process.env.REDIS_HOST || 'docker.dev',
-      port: process.env.REDIS_PORT || '6379'
+      host: process.env.ACCOUNTS_REDIS_HOST || 'docker.dev',
+      port: process.env.ACCOUNTS_REDIS_PORT || '6379'
     }
   },
   {
