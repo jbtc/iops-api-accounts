@@ -26,6 +26,7 @@ let applyDefaults = (role) => {
 };
 
 module.exports = [
+
   {
     path: '/v1/roles',
     method: 'GET',
