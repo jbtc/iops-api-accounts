@@ -1,10 +1,12 @@
 'use strict';
 
+import routes from './routes';
+
 let plugin = (server, options, next) => {
-  server.route(require('./routes'));
-  next();
+  server.route(routes);
+  return next();
 };
 
-plugin.attributes = require('./package');
+plugin.attributes = { pkg: require('./package') };
 
 module.exports = plugin;

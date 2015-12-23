@@ -26,7 +26,6 @@ let applyDefaults = (role) => {
 };
 
 module.exports = [
-
   {
     path: '/v1/roles',
     method: 'GET',
@@ -95,8 +94,8 @@ module.exports = [
           try {
             let role = yield applyDefaults(request.payload);
             let result = yield db.roles
-                                 .insert(role, { returnChanges: true })
-                                 .run();
+              .insert(role, { returnChanges: true })
+              .run();
             role = ResultHelpers.value(result);
             return reply(role).code(201);
           } catch (e) {
@@ -130,8 +129,8 @@ module.exports = [
             let claimId = request.params.id;
 
             let claim = yield db.roles
-                                .get(claimId)
-                                .run();
+              .get(claimId)
+              .run();
 
             if (!claim) {
               return reply(Boom.notFound(`Role ${claimId} not found`));
@@ -177,9 +176,9 @@ module.exports = [
             let role = request.payload;
 
             let result = yield db.roles
-                                 .get(id)
-                                 .update(role, { returnChanges: true })
-                                 .run();
+              .get(id)
+              .update(role, { returnChanges: true })
+              .run();
 
             if (result.unchanged > 0) {
               let existing = yield db.roles.get(id).run();
@@ -213,9 +212,9 @@ module.exports = [
             let id = request.params.id;
 
             let result = yield db.roles
-                                 .get(id)
-                                 .delete()
-                                 .run();
+              .get(id)
+              .delete()
+              .run();
 
             if (result.deleted > 0) {
               request.log(['info'], `Role ${id} deleted`);
@@ -230,7 +229,6 @@ module.exports = [
         })
       }
     }
-  },
-
+  }
 
 ];

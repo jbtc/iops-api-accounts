@@ -1,6 +1,6 @@
 'use strict';
 
-let expect = require('chai').expect;
+let expect = require('code').expect;
 
 describe('Accounts API', () => {
   it('should pass', () => {

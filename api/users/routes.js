@@ -1,16 +1,19 @@
 'use strict';
 
-let Promise = require('bluebird');
-let Moment = require('moment');
-let Joi = require('joi');
-let Boom = require('boom');
-let _ = require('lodash');
-let r = require('../../config').r;
-let Bcrypt = require('bcryptjs');
-let Hat = require('hat');
-let ModelHelpers = require('../../lib/models');
+import Promise from 'bluebird';
+import JWT from 'jsonwebtoken';
+import Moment from 'moment';
+import Joi from 'joi';
+import Boom from 'boom';
+import _ from 'lodash';
+import {r} from '../../config';
+import Bcrypt from 'bcryptjs';
+import Hat from 'hat';
+import ModelHelpers from '../../lib/models';
+
 
 const SALT_WORK_FACTOR = 10;
+const EXPIRES_AT = Moment(1, 'months').unix();
 
 const User = {
   id: Joi.string().description('Id'),
@@ -61,22 +64,40 @@ let sanitize = (user) => {
 
 let userExists = (user) => {
   return r.table('users')
-          .filter({ email: user.email })
-          .isEmpty()
-          .run()
-          .then((result) => {
-            return !result;
-          });
+    .filter({ email: user.email })
+    .isEmpty()
+    .run()
+    .then((result) => {
+      return !result;
+    });
 };
 
 let authenticate = (user, password) => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
+    if (!user.passwordHash) return reject(Boom.unauthorized('Wrong username or password'));
     return resolve(Bcrypt.compareSync(password, user.passwordHash));
   });
 };
 
+const SECRET_KEY = process.env.SECRET_KEY || `6h@pX:/Se>Mlb$RwjeG'tY98[3u1[Fmm&35qn9E448i?!c342188g6E$6|:7.4h`;
+const sign = (session) => {
+  return JWT.sign(session, SECRET_KEY);
+};
 
-module.exports = [
+const generateToken = async (user) => {
+  user = await sanitize(user);
+  let session = _.defaults(user, {
+    iss: 'iops-api-accounts',
+    iat: Moment().unix(),
+    exp: EXPIRES_AT
+  });
+
+  return sign(session);
+};
+
+
+export default [
+
   {
     path: '/v1/users',
     method: 'GET',
@@ -116,8 +137,8 @@ module.exports = [
             }
 
             let result = yield query.withFields(UserFields)
-                                    .orderBy(r.desc('lastName'))
-                                    .run();
+              .orderBy(r.desc('lastName'))
+              .run();
 
             request.log(['info'], result);
             return reply(result);
@@ -130,6 +151,7 @@ module.exports = [
       }
     }
   },
+
   {
     path: '/v1/users/{id}',
     method: 'GET',
@@ -151,10 +173,10 @@ module.exports = [
         async: Promise.coroutine(function* (request, reply) {
           try {
             let user = yield r.table('users')
-                              .get(request.params.id)
-                              .run();
+              .get(request.params.id)
+              .run();
 
-            if(!user) return reply(Boom.notFound('User not found'));
+            if (!user) return reply(Boom.notFound('User not found'));
 
             user = yield sanitize(user);
 
@@ -166,6 +188,7 @@ module.exports = [
       }
     }
   },
+
   {
     path: '/v1/users',
     method: 'POST',
@@ -200,8 +223,8 @@ module.exports = [
             user = yield hashPassword(user);
 
             let result = yield r.table('users')
-                                .insert(user, { returnChanges: true })
-                                .run();
+              .insert(user, { returnChanges: true })
+              .run();
 
             user = _.first(result.changes).new_val;
 
@@ -215,6 +238,7 @@ module.exports = [
       }
     }
   },
+
   {
     path: '/v1/users/{id}',
     method: 'PUT',
@@ -253,8 +277,8 @@ module.exports = [
               let exists = yield userExists(user);
               if (exists) {
                 let existingUserResults = yield r.table('users')
-                                                 .filter({ email: user.email })
-                                                 .run();
+                  .filter({ email: user.email })
+                  .run();
                 if (_.first(existingUserResults).id !== userId) {
                   return reply(Boom.conflict(`User already exists with email ${user.email}`));
                 }
@@ -262,9 +286,9 @@ module.exports = [
             }
 
             let result = yield r.table('users')
-                                .get(userId)
-                                .update(user, { returnChanges: true })
-                                .run();
+              .get(userId)
+              .update(user, { returnChanges: true })
+              .run();
 
             let changedUser = _.first(result.changes).new_val;
             changedUser = yield sanitize(changedUser);
@@ -280,6 +304,7 @@ module.exports = [
       }
     }
   },
+
   {
     path: '/v1/users/{id}',
     method: 'DELETE',
@@ -291,9 +316,9 @@ module.exports = [
           try {
             let id = request.params.id;
             let result = yield r.table('users')
-                                .get(id)
-                                .delete()
-                                .run();
+              .get(id)
+              .delete()
+              .run();
 
             if (result.deleted > 0) {
               request.log(['info'], `User ${id} deleted`);
@@ -310,6 +335,7 @@ module.exports = [
       }
     }
   },
+
   {
     path: '/v1/login',
     method: 'POST',
@@ -331,27 +357,31 @@ module.exports = [
       },
 
       handler: {
-        async: Promise.coroutine(function* (request, reply) {
+        async: async (request, reply) => {
           try {
 
             let email = request.payload.email;
             let password = request.payload.password;
-            let results = yield r.table('users')
-                                 .getAll(email, { index: 'email' })
-                                 .run();
+            let results = await r.table('users')
+              .getAll(email, { index: 'email' })
+              .run();
 
             let user = _.first(results);
-
-            let authenticated = yield authenticate(user, password);
+            if (!user) {
+              return reply(Boom.notFound(`User not found`))
+            }
+            let authenticated = await authenticate(user, password);
             if (!authenticated) {
               return reply(Boom.unauthorized('Wrong username/password', request.payload));
             }
 
-            return reply({ token: user.token });
+            const token = await generateToken(user);
+
+            return reply({ token });
           } catch (e) {
             return reply(e);
           }
-        })
+        }
       }
     }
   }

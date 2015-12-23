@@ -6,7 +6,7 @@ let CatboxRedis = require('catbox-redis');
 let plugin = (server, options, next) => {
 
   options = options || {};
-  options.host = options.host || 'docker.dev';
+  options.host = options.host || 'localhost';
   options.port = options.port || '6379';
 
   let client = new Catbox.Client(CatboxRedis, options);

@@ -17,7 +17,7 @@ const Claim = {
   accountId: Joi.string().optional().description('Account Id')
 };
 
-let applyDefaults = (claim) => {
+const applyDefaults = (claim) => {
   return new Promise(resolve => {
     claim = ModelHelpers.applyBasicDefaults(claim);
     return resolve(claim);
