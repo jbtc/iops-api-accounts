@@ -1,6 +1,0 @@
-{
-  "name": "accounts",
-  "dependencies": [
-    "hapi-async-handler"
-  ]
-}

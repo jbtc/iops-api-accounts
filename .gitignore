@@ -306,4 +306,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
+config/defaults.json

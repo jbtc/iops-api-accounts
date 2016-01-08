@@ -1,4 +1,7 @@
 {
-  "RDB_DB": "iops_accounts_testing",
-  "RDB_SERVER_HOST": "localhost"
+  "IOPS_MONGODB_URI": "iops-accounts",
+  "IOPS_REDIS_PARTITION": "accounts",
+  "IOPS_REDIS_HOST": "redis.iops.svc.tutum.io",
+  "IOPS_REDIS_PORT": 6379,
+  "IOPS_REDIS_PASSWORD": "159kbcs!"
 }

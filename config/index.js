@@ -1,18 +1,11 @@
 'use strict';
 
-let Nconf = require('nconf');
-let Path = require('path');
-let RethinkDB = require('rethinkdbdash');
+import NConf from 'nconf';
+import Path from 'path';
 
-Nconf.argv()
-     .env()
-     .file(Path.resolve(__dirname, './defaults.json'));
+NConf.argv()
+  .env()
+  .file(Path.resolve(__dirname, './defaults.json'));
 
-let r = RethinkDB({
-  db: Nconf.get('RDB_DB'),
-  servers: [
-    { host: Nconf.get('RDB_SERVER_HOST') }
-  ]
-});
 
-module.exports = { r, nconf: Nconf };
+export default NConf;
