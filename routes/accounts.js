@@ -1,8 +1,10 @@
 'use strict';
 
-import Joi from 'joi';
+
 import Boom from 'boom';
-import AccountsService from '../lib/services/accounts'
+import Services from '../lib/services';
+import {BasicSite, Site} from '../lib/models/account';
+import Joi from '../lib/joi';
 
 export default [
 
@@ -11,20 +13,20 @@ export default [
     path: '/v1/accounts',
 
     config: {
-      tags: ['api']
+      tags: ['api'],
+      description: 'Accounts'
     },
 
     handler: {
       async: async (request, reply) => {
         try {
-          const accounts = await AccountsService.find();
+          const accounts = await Services.accounts.find();
           return reply(accounts);
         } catch (e) {
           return await reply(e);
         }
       }
     }
-
   },
 
   {
@@ -33,6 +35,8 @@ export default [
 
     config: {
       tags: ['api'],
+      description: 'Account',
+
       validate: {
         params: {
           id: Joi.string().trim()
@@ -44,7 +48,7 @@ export default [
       async: async (request, reply) => {
         try {
           const id = request.params.id;
-          const accounts = await AccountsService.findById(id);
+          const accounts = await Services.accounts.findById(id);
           return reply(accounts);
         } catch (e) {
           return await reply(e);
@@ -59,18 +63,17 @@ export default [
 
     config: {
       tags: ['api'],
+      description: 'Create Account',
+
       validate: {
-        payload: Joi.object({
-          name: Joi.string().min(2).trim().description('Name'),
-          settings: Joi.object()
-        })
+        payload: BasicSite
       }
     },
 
     handler: {
       async: async (request, reply) => {
         try {
-          let account = await AccountsService.create(request.payload);
+          let account = await Services.accounts.create(request.payload);
           return reply(account);
         } catch (e) {
           return await reply(e);
@@ -85,15 +88,13 @@ export default [
 
     config: {
       tags: ['api'],
+      description: 'Update an Account',
+
       validate: {
         params: {
           id: Joi.string().trim()
         },
-        payload: Joi.object({
-          name: Joi.string().min(2).trim().description('Name'),
-          settings: Joi.object(),
-          isActive: Joi.boolean()
-        })
+        payload: BasicSite
       }
     },
 
@@ -102,13 +103,13 @@ export default [
         try {
           const id = request.params.id;
           let account = request.payload;
-          const result = await AccountsService.update(id, account);
+          const result = await Services.accounts.update(id, account);
 
           if (result.ok === 1 && result.n === 0) {
             return reply(Boom.notFound(`Account ${id} not found`));
           }
 
-          account = await AccountsService.findById(id);
+          account = await Services.accounts.findById(id);
           return reply(account);
         } catch (e) {
           return await reply(e);
@@ -123,6 +124,7 @@ export default [
 
     config: {
       tags: ['api'],
+      description: 'Delete an account',
 
       validate: {
         params: {
@@ -135,7 +137,7 @@ export default [
       async: async (request, reply) => {
         try {
           const id = request.params.id;
-          const result = await AccountsService.remove(id);
+          const result = await Services.accounts.remove(id);
           if (result.ok === 1 && result.n === 0) {
             return reply(Boom.notFound(`Account ${id} not found`));
           }
@@ -145,5 +147,6 @@ export default [
         }
       }
     }
-  },
+  }
+
 ];

@@ -8,23 +8,21 @@ import Joi from '../lib/joi';
 const VERSION = `/v1`;
 
 const PREFIX = {
-  USER: `${VERSION}/accounts/{accountId}`,
-  SITE: `${VERSION}/sites/{siteId}`
+  USER: `${VERSION}/users/{userId}`
 };
 
 const PATH = {
-  ACCOUNT_DASHBOARDS: `${PREFIX.USER}/claims`,
-  SITES_DASHBOARDS: `${PREFIX.SITE}/claims`
+  ACCOUNT_DASHBOARDS: `${PREFIX.USER}/dashboards`
 };
 
 export default [
 
   {
-    path: `${VERSION}/claims/{claimId}`,
+    path: `${VERSION}/dashboards/{dashboardId}`,
     method: 'GET',
     config: {
       tags: ['api'],
-      description: `Claim`,
+      description: `Dashboard`,
 
       handler: {
         async: async (request, reply) => {
@@ -39,11 +37,11 @@ export default [
   },
 
   {
-    path: `${VERSION}/claims/{claimId}`,
+    path: `${VERSION}/dashboards/{dashboardId}`,
     method: ['PUT', 'PATCH', 'DELETE'],
     config: {
       tags: ['api'],
-      description: `Update Claim`,
+      description: `Update Dashboard`,
 
       handler: {
         async: async (request, reply) => {
@@ -62,7 +60,7 @@ export default [
     method: 'GET',
     config: {
       tags: ['api'],
-      description: `Account's Claims`,
+      description: `User's Dashboard`,
 
       handler: {
         async: async (request, reply) => {
@@ -77,30 +75,11 @@ export default [
   },
 
   {
-    path: PATH.SITES_DASHBOARDS,
-    method: 'GET',
+    path: PATH.ACCOUNT_DASHBOARDS,
+    method: 'POST',
     config: {
       tags: ['api'],
-      description: `Site's Claims`,
-
-      handler: {
-        async: async (request, reply) => {
-          try {
-            return reply([]);
-          } catch (e) {
-            return reply(e);
-          }
-        }
-      }
-    }
-  },
-
-  {
-    path: `${VERSION}/claims/{claimId}/users`,
-    method: 'GET',
-    config: {
-      tags: ['api'],
-      description: `Users associated to a claim`,
+      description: `Create Dashboard`,
 
       handler: {
         async: async (request, reply) => {
