@@ -18,18 +18,18 @@ const PATH = {
 };
 
 export default [
-
   {
-    path: `${VERSION}/claims/{claimId}`,
+    path: `${VERSION}/claims`,
     method: 'GET',
     config: {
       tags: ['api'],
-      description: `Claim`,
+      description: `Claims`,
 
       handler: {
         async: async (request, reply) => {
           try {
-            return reply({});
+            let claims = await Services.claims.find({ accountId: { $exists: false }, isActive: true });
+            return reply(claims);
           } catch (e) {
             return reply(e);
           }
@@ -40,15 +40,87 @@ export default [
 
   {
     path: `${VERSION}/claims/{claimId}`,
-    method: ['PUT', 'PATCH', 'DELETE'],
+    method: 'GET',
+    config: {
+      tags: ['api'],
+      description: `Claim`,
+
+      validate: {
+        params: {
+          claimId: Joi.string().required()
+        }
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          const id = request.params.id;
+          try {
+
+            let claim = await Services.claims.findById(id);
+            if(!claim) return reply(Boom.notFound(`Claim ${id} not found`));
+            return reply(claim);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+
+
+
+
+  {
+    path: `${VERSION}/claims/{claimId}`,
+    method: 'PUT',
     config: {
       tags: ['api'],
       description: `Update Claim`,
 
+      validate: {
+        params: {
+          claimId: Joi.string().required()
+        }
+      },
+
       handler: {
         async: async (request, reply) => {
+          const id = request.params.id;
           try {
-            return reply({});
+
+            let claim = await Services.claims.findById(id);
+            if(!claim) return reply(Boom.notFound(`Claim ${id} not found`));
+            return reply(claim);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: `${VERSION}/claims/{claimId}`,
+    method: 'DELETE',
+    config: {
+      tags: ['api'],
+      description: `Delete Claim`,
+
+      validate: {
+        params: {
+          claimId: Joi.string().required()
+        }
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          const id = request.params.id;
+          try {
+
+            let claim = await Services.claims.findById(id);
+            if(!claim) return reply(Boom.notFound(`Claim ${id} not found`));
+            return reply(claim);
           } catch (e) {
             return reply(e);
           }

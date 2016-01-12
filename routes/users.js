@@ -46,7 +46,7 @@ export default [
         async: async (request, reply) => {
           const id = request.params.id;
           try {
-            const user = await Services.users.findById(id);
+            const user = await Services.users.findById(id, { passwordHash: 0 });
             if (!user) return reply(Boom.notFound(`User ${id} not found`));
             return reply(user);
           } catch (e) {
@@ -65,16 +65,15 @@ export default [
       description: 'Create User',
 
       validate: {
-        payload: BasicUser.concat(clearTextPasswordSchema)
-          .without('_id', [])
-          .without('passwordHash', ['password'])
+        payload: BasicUser.concat(clearTextPasswordSchema).without('_id', []).without('passwordHash', ['password'])
       },
 
       handler: {
         async: async (request, reply) => {
           try {
-            //const results = Services.users.find({ isActive: true }, { passwordHash: 0 });
-            return reply([]);
+            let user = request.payload;
+            user = await Services.users.create(user);
+            return reply(user);
           } catch (e) {
             return reply(e);
           }
@@ -94,45 +93,21 @@ export default [
         params: {
           id: Joi.string().required()
         },
-        payload: User.concat(clearTextPasswordSchema).without('passwordHash', ['password']).without('_id', [])
+        payload: User.concat(clearTextPasswordSchema).without('passwordHash', ['password']).without('_id', []).optionalKeys('name.first', 'name.last', 'email')
       },
 
       handler: {
         async: async (request, reply) => {
           const id = request.params.id;
           try {
-            const user = await Services.users.findById(id);
+            let user = await Services.users.findById(id);
             if (!user) return reply(Boom.notFound(`User ${id} not found`));
-            return reply(user);
-          } catch (e) {
-            return reply(e);
-          }
-        }
-      }
-    }
-  },
-
-  {
-    path: '/v1/users/{id}',
-    method: 'PATCH',
-    config: {
-      tags: ['api'],
-      description: 'Update User',
-
-      validate: {
-        params: {
-          id: Joi.string().required()
-        },
-        payload: User.concat(clearTextPasswordSchema).without('passwordHash', ['password']).optionalKeys('name.first', 'name.last', 'email').without('_id', [])
-      },
-
-      handler: {
-        async: async (request, reply) => {
-          const id = request.params.id;
-          try {
-            const user = await Services.users.findById(id);
-            if (!user) return reply(Boom.notFound(`User ${id} not found`));
-            return reply(user);
+            let results = await Services.users.update(id, request.payload);
+            if (results.ok === 1 && results.value) {
+              user = Services.users.findById(id, { passwordHash: 0 });
+              return reply(user);
+            }
+            return reply(Boom.error(results.lastErrorObject))
           } catch (e) {
             return reply(e);
           }
@@ -160,7 +135,8 @@ export default [
           try {
             const user = await Services.users.findById(id);
             if (!user) return reply(Boom.notFound(`User ${id} not found`));
-            return reply(user);
+            await Services.users.remove(id);
+            return reply();
           } catch (e) {
             return reply(e);
           }
@@ -231,6 +207,6 @@ export default [
         }
       }
     }
-  },
+  }
 
 ];
