@@ -3,7 +3,6 @@
 import Hapi from 'hapi';
 import Relish from 'relish';
 
-import HapiPluginRouter from 'hapi-plugin-router';
 import Catbox from 'catbox';
 import CatboxRedis from 'catbox-redis';
 
@@ -57,20 +56,6 @@ server.register([
   require('vision'),
   require('tv'),
   require('hapi-async-handler'),
-  //HapiPluginRouter,
-  //AccountsPlugin,
-  //require('./accounts'),
-  //require('./users'),
-  //require('./claims'),
-  //require('./roles'),
-  //{
-  //  register: require('./cache'),
-  //  options: {
-  //    host: process.env.ACCOUNTS_REDIS_HOST || 'localhost',
-  //    port: process.env.ACCOUNTS_REDIS_PORT || '6379'
-  //  }
-  //},
-
   {
     register: require('hapi-router'),
     options: {
@@ -120,12 +105,11 @@ server.register([
       password: Config.get('IOPS_REDIS_PASSWORD')
     };
 
-    startCache(options)
-      .then(() => {
-        server.start(function () {
-          console.log("Server started", server.info.uri);
-        });
+    startCache(options).then(() => {
+      server.start(function () {
+        console.log("Server started", server.info.uri);
       });
+    });
   } catch (e) {
     throw e;
   }

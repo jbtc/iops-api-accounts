@@ -45,7 +45,6 @@
     "hapi": "^12.1.0",
     "hapi-async-handler": "^1.0.3",
     "hapi-auth-jwt2": "^5.3.2",
-    "hapi-plugin-router": "^1.1.0",
     "hapi-router": "^3.4.0",
     "hapi-swaggered": "^2.4.0",
     "hapi-swaggered-ui": "^2.1.0",

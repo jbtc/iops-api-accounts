@@ -152,10 +152,6 @@ export default [
       tags: ['api'],
       description: `User's by Account`,
 
-      //response: {
-      //  schema: Joi.array().items(Account).meta({ className: 'Accounts' })
-      //},
-
       handler: {
         async: async (request, reply) => {
           try {
