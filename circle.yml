@@ -6,12 +6,12 @@ machine:
 
 notify:
   webhooks:
-    - url: https://dashboard.tutum.co/api/v1/service/91073d20-cf32-4762-a9cd-44a05e5a1dd1/trigger/fae14708-175c-44bd-91b4-b9e9968bb7c5/call/
+    - url: https://dashboard.tutum.co/api/v1/service/db369b36-fade-4f91-a389-e39b6257f005/trigger/91bc35c3-e7ac-438e-ae4f-8a791b78039e/call/
 
 deployment:
   production:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS tutum.co
-      - docker build -t tutum.co/iops/api-accounts .
-      - docker push tutum.co/iops/api-accounts
+      - docker tag local-image:$CIRCLE_BUILD_NUM tutum.co/iops/api-accounts:$CIRCLE_BUILD_NUM
+      - docker push tutum.co/iops/api-accounts:$CIRCLE_BUILD_NUM
