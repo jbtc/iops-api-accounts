@@ -1,7 +1,3 @@
 {
-  "IOPS_MONGODB_URI": "docker.dev/iops-accounts",
-  "IOPS_REDIS_PARTITION": "accounts",
-  "IOPS_REDIS_HOST": "redis.iops.svc.tutum.io",
-  "IOPS_REDIS_PORT": 6379,
-  "IOPS_REDIS_PASSWORD": "159kbcs!"
+  "IOPS_MONGODB_URI": "docker.dev/iops-accounts"
 }

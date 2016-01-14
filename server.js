@@ -3,11 +3,7 @@
 import Hapi from 'hapi';
 import Relish from 'relish';
 
-import Catbox from 'catbox';
-import CatboxRedis from 'catbox-redis';
-
 import Config from './config';
-//import AccountsPlugin from './accounts';
 
 
 const server = new Hapi.Server({
@@ -26,19 +22,6 @@ const server = new Hapi.Server({
     }
   }
 });
-
-const startCache = async (options = {}) => {
-
-  const client = new Catbox.Client(CatboxRedis, options);
-  return await new Promise((resolve, reject) => {
-    client.start((err) => {
-      if (err) return reject(err);
-      return resolve();
-    });
-  });
-
-};
-
 
 server.connection({ port: process.env.PORT || 3000 });
 
