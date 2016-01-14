@@ -2,8 +2,9 @@
 
 import Boom from 'boom';
 import Services from '../lib/services';
-import {BasicUser, User} from '../lib/models/user';
+import * as Models from '../lib/models';
 import Joi from '../lib/joi';
+import _ from 'lodash';
 
 const clearTextPasswordSchema = Joi.object({ password: Joi.string().min(7) });
 
@@ -65,7 +66,7 @@ export default [
       description: 'Create User',
 
       validate: {
-        payload: BasicUser.concat(clearTextPasswordSchema).without('_id', []).without('passwordHash', ['password'])
+        payload: Joi.object().keys(_.omit(Models.User, 'passwordHash', 'isActive')).keys({ password: Joi.string().min(7) }).meta({ className: 'NewUser' })
       },
 
       handler: {
@@ -93,7 +94,7 @@ export default [
         params: {
           id: Joi.string().required()
         },
-        payload: User.concat(clearTextPasswordSchema).without('passwordHash', ['password']).without('_id', []).optionalKeys('name.first', 'name.last', 'email')
+        payload: Joi.object().keys(_.omit(Models.User, 'passwordHash')).keys({ password: Joi.string().min(7) }).optionalKeys('firstName', 'lastName').meta({ className: 'UpdateUser' })
       },
 
       handler: {
@@ -172,11 +173,20 @@ export default [
       tags: ['api'],
       description: 'Generate a token to use for login',
 
+      validate: {
+        payload: Joi.object({
+          email: Joi.string().email().lowercase().required(),
+          password: Joi.string().required().min(7)
+        }).meta({ className: 'LoginModel' })
+      },
+
       handler: {
         async: async (request, reply) => {
+          const user = request.payload;
           try {
-            const results = Services.users.find({ isActive: true }, { passwordHash: 0 });
-            return reply(results);
+
+            const token = await Services.users.authenticate(user.email, user.password);
+            return reply({ token });
           } catch (e) {
             return reply(e);
           }

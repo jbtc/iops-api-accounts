@@ -2,8 +2,9 @@
 
 import Boom from 'boom';
 import Services from '../lib/services';
-import {BasicUser, User} from '../lib/models/user';
 import Joi from '../lib/joi';
+import * as Models from '../lib/models';
+import _ from 'lodash';
 
 const VERSION = `/v1`;
 
@@ -18,6 +19,7 @@ const PATH = {
 };
 
 export default [
+
   {
     path: `${VERSION}/claims`,
     method: 'GET',
@@ -47,17 +49,17 @@ export default [
 
       validate: {
         params: {
-          claimId: Joi.string().required()
+          claimId: Joi.shortid().required()
         }
       },
 
       handler: {
         async: async (request, reply) => {
-          const id = request.params.id;
+          const id = request.params.claimId;
           try {
 
             let claim = await Services.claims.findById(id);
-            if(!claim) return reply(Boom.notFound(`Claim ${id} not found`));
+            if (!claim) return reply(Boom.notFound(`Claim ${id} not found`));
             return reply(claim);
           } catch (e) {
             return reply(e);
@@ -66,10 +68,6 @@ export default [
       }
     }
   },
-
-
-
-
 
   {
     path: `${VERSION}/claims/{claimId}`,
@@ -80,18 +78,18 @@ export default [
 
       validate: {
         params: {
-          claimId: Joi.string().required()
-        }
+          claimId: Joi.shortid().required()
+        },
+        payload: Joi.object(Models.Claim).optionalKeys('name', 'description', 'accountId')
       },
 
       handler: {
         async: async (request, reply) => {
-          const id = request.params.id;
+          const id = request.params.claimId;
           try {
-
-            let claim = await Services.claims.findById(id);
-            if(!claim) return reply(Boom.notFound(`Claim ${id} not found`));
-            return reply(claim);
+            let claim = request.payload;
+            let result = await Services.claims.update(id, claim);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }
@@ -99,6 +97,30 @@ export default [
       }
     }
   },
+
+  {
+    path: `${VERSION}/claims`,
+    method: 'POST',
+    config: {
+      tags: ['api'],
+      description: `New Claim`,
+      validate: {
+        payload: Joi.object(_.omit(Models.Claim, 'isActive'))
+      }
+    },
+
+    handler: {
+      async: async (request, reply) => {
+        try {
+          const result = await Services.claims.create(request.payload);
+          return reply(result);
+        } catch (e) {
+          return reply(e);
+        }
+      }
+    }
+  },
+
 
   {
     path: `${VERSION}/claims/{claimId}`,
@@ -115,12 +137,11 @@ export default [
 
       handler: {
         async: async (request, reply) => {
-          const id = request.params.id;
+          const id = request.params.claimId;
           try {
 
-            let claim = await Services.claims.findById(id);
-            if(!claim) return reply(Boom.notFound(`Claim ${id} not found`));
-            return reply(claim);
+            let result = await Services.claims.remove(id);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }

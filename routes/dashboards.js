@@ -2,8 +2,9 @@
 
 import Boom from 'boom';
 import Services from '../lib/services';
-import {BasicUser, User} from '../lib/models/user';
 import Joi from '../lib/joi';
+import * as Models from '../lib/models';
+import _ from 'lodash';
 
 const VERSION = `/v1`;
 
@@ -18,16 +19,17 @@ const PATH = {
 export default [
 
   {
-    path: `${VERSION}/dashboards/{dashboardId}`,
+    path: `${VERSION}/dashboards`,
     method: 'GET',
     config: {
       tags: ['api'],
-      description: `Dashboard`,
+      description: `Dashboards`,
 
       handler: {
         async: async (request, reply) => {
           try {
-            return reply({});
+            const results = Services.dashboards.find({ isActive: true });
+            return reply(results);
           } catch (e) {
             return reply(e);
           }
@@ -38,15 +40,69 @@ export default [
 
   {
     path: `${VERSION}/dashboards/{dashboardId}`,
-    method: ['PUT', 'PATCH', 'DELETE'],
+    method: 'GET',
     config: {
       tags: ['api'],
-      description: `Update Dashboard`,
+      description: `Dashboard`,
 
       handler: {
         async: async (request, reply) => {
+          const id = request.params.dashboardId;
           try {
-            return reply({});
+            let result = Services.dashboards.findById(id);
+            return reply(result);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: `${VERSION}/dashboards/{dashboardId}`,
+    method: 'PUT',
+    config: {
+      tags: ['api'],
+      description: `Dashboard`,
+
+      validate: {
+        params: { dashboardId: Joi.shortid().required() },
+        payload: Joi.object(_.omit(Models.Dashboard, 'userId')).meta({ className: 'UpdateDashboard' })
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          const id = request.params.dashboardId;
+          const dashboard = request.payload;
+          try {
+            let result = Services.dashboards.update(id, dashboard);
+            return reply(result);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: `${VERSION}/dashboards/{dashboardId}`,
+    method: 'DELETE',
+    config: {
+      tags: ['api'],
+      description: `Remove Dashboard`,
+
+      validate: {
+        params: { dashboardId: Joi.shortid().required() }
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          const id = request.params.dashboardId;
+          try {
+            let result = await Services.dashboards.remove(id);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }
@@ -62,10 +118,17 @@ export default [
       tags: ['api'],
       description: `User's Dashboard`,
 
+      validate: {
+        params: { userId: Joi.shortid().required() }
+      },
+
       handler: {
         async: async (request, reply) => {
+          const userId = request.params.userId;
           try {
-            return reply([]);
+
+            const results = Services.dashboards.find({ isActive: true, userId });
+            return reply(results);
           } catch (e) {
             return reply(e);
           }
@@ -81,10 +144,19 @@ export default [
       tags: ['api'],
       description: `Create Dashboard`,
 
+      validate: {
+        params: { userId: Joi.shortid().required() },
+        payload: Joi.object(_.omit(Models.Dashboard, 'isActive')).meta({ className: 'NewDashboard' })
+      },
+
       handler: {
         async: async (request, reply) => {
+          const userId = request.params.userId;
+          let dashboard = _.merge(request.payload, { userId });
+
           try {
-            return reply([]);
+            const result = Services.dashboards.create(dashboard);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }

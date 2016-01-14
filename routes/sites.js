@@ -3,16 +3,19 @@
 import Boom from 'boom';
 import Joi from '../lib/joi';
 import Services from '../lib/services';
+import * as Models from '../lib/models';
+import _ from 'lodash';
 
 const ROUTE_PREFIX = '/v1/accounts/{accountId}';
 
 const PATH = {
   SITES: `${ROUTE_PREFIX}/sites`,
-  SITE: `${ROUTE_PREFIX}/sites/{id}`
+  SITE: `${ROUTE_PREFIX}/sites/{siteId}`
 };
 
 
 export default [
+
   {
     path: PATH.SITES,
     method: 'GET',
@@ -41,7 +44,7 @@ export default [
   },
 
   {
-    path: '/v1/sites/{id}',
+    path: '/v1/sites/{siteId}',
     method: 'GET',
     config: {
       tags: ['api'],
@@ -49,13 +52,13 @@ export default [
 
       validate: {
         params: {
-          id: Joi.shortid().required()
+          siteId: Joi.shortid().required()
         }
       },
 
       handler: {
         async: async (request, reply) => {
-          const id = request.params.id;
+          const id = request.params.siteId;
           try {
             const result = await Services.sites.findById(id);
 
@@ -83,25 +86,18 @@ export default [
         params: {
           accountId: Joi.shortid().required()
         },
-        payload: Joi.object({
-          name: Joi.string().required(),
-          code: Joi.string().uppercase().required(),
-          shortName: Joi.string().required(),
-          serverUrl: Joi.string().uri().required(),
-          refreshRate: Joi.number().default(5),
-          isActive: Joi.boolean().default(true)
-        }).meta({ className: 'NewSite' })
+        payload: Joi.object(_.omit(Models.Site, 'isActive')).meta({ className: 'NewAccount' })
       },
 
       handler: {
         async: async (request, reply) => {
           const accountId = request.params.accountId;
-          const site = request.params.payload;
+          let site = request.payload;
           site.accountId = accountId;
 
           try {
-            const results = Services.sites.find({ isActive: true }, { passwordHash: 0 });
-            return reply(results);
+            const result = await Services.sites.create(site);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }
@@ -110,9 +106,8 @@ export default [
     }
   },
 
-
   {
-    path: PATH.SITE,
+    path: `/v1/sites/{siteId}`,
     method: 'PUT',
     config: {
       tags: ['api'],
@@ -120,16 +115,17 @@ export default [
 
       validate: {
         params: {
-          accountId: Joi.shortid().required(),
-          id: Joi.shortid().required()
-        }
+          siteId: Joi.shortid().required()
+        },
+        payload: Joi.object(_.omit(Models.Site, 'isActive', 'accountId')).meta({ className: 'UpdateAccount' })
       },
 
       handler: {
         async: async (request, reply) => {
+          const id = request.params.siteId;
           try {
-            const results = Services.sites.find({ isActive: true }, { passwordHash: 0 });
-            return reply(results);
+            const result = Services.sites.update(id, request.payload);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }
@@ -148,14 +144,16 @@ export default [
       validate: {
         params: {
           accountId: Joi.shortid().required(),
-          id: Joi.shortid().required()
+          siteId: Joi.shortid().required()
         }
       },
 
       handler: {
         async: async (request, reply) => {
+          const accountId = request.params.accountId;
+          const id = request.params.siteId;
           try {
-            const results = Services.sites.find({ isActive: true }, { passwordHash: 0 });
+            const results = Services.sites.remove(accountId, id);
             return reply(results);
           } catch (e) {
             return reply(e);

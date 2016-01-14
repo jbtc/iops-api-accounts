@@ -3,8 +3,9 @@
 
 import Boom from 'boom';
 import Services from '../lib/services';
-import {BasicSite, Site} from '../lib/models/account';
 import Joi from '../lib/joi';
+import * as Models from '../lib/models';
+import _ from 'lodash';
 
 export default [
 
@@ -31,7 +32,7 @@ export default [
 
   {
     method: 'GET',
-    path: '/v1/accounts/{id}',
+    path: '/v1/accounts/{accountId}',
 
     config: {
       tags: ['api'],
@@ -39,7 +40,7 @@ export default [
 
       validate: {
         params: {
-          id: Joi.string().trim()
+          accountId: Joi.string().trim()
         }
       }
     },
@@ -47,7 +48,7 @@ export default [
     handler: {
       async: async (request, reply) => {
         try {
-          const id = request.params.id;
+          const id = request.params.accountId;
           const accounts = await Services.accounts.findById(id);
           return reply(accounts);
         } catch (e) {
@@ -66,7 +67,7 @@ export default [
       description: 'Create Account',
 
       validate: {
-        payload: BasicSite
+        payload: Joi.object(_.omit(Models.Account, 'isActive'))
       }
     },
 
@@ -84,7 +85,7 @@ export default [
 
   {
     method: 'PUT',
-    path: '/v1/accounts/{id}',
+    path: '/v1/accounts/{accountId}',
 
     config: {
       tags: ['api'],
@@ -92,16 +93,16 @@ export default [
 
       validate: {
         params: {
-          id: Joi.string().trim()
+          accountId: Joi.shortid().required()
         },
-        payload: BasicSite
+        payload: Models.Account
       }
     },
 
     handler: {
       async: async (request, reply) => {
         try {
-          const id = request.params.id;
+          const id = request.params.accountId;
           let account = request.payload;
           const result = await Services.accounts.update(id, account);
 
@@ -120,7 +121,7 @@ export default [
 
   {
     method: 'DELETE',
-    path: '/v1/accounts/{id}',
+    path: '/v1/accounts/{accountId}',
 
     config: {
       tags: ['api'],
@@ -128,7 +129,7 @@ export default [
 
       validate: {
         params: {
-          id: Joi.string().trim()
+          accountId: Joi.string().trim()
         }
       }
     },
@@ -136,7 +137,7 @@ export default [
     handler: {
       async: async (request, reply) => {
         try {
-          const id = request.params.id;
+          const id = request.params.accountId;
           const result = await Services.accounts.remove(id);
           if (result.ok === 1 && result.n === 0) {
             return reply(Boom.notFound(`Account ${id} not found`));
