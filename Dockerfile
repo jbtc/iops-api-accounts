@@ -1,4 +1,4 @@
-FROM node:4.2
+FROM node:latest
 
 MAINTAINER Tyler Garlick <tjgarlick@gmail.com>
 
@@ -10,4 +10,4 @@ RUN npm install
 
 EXPOSE 4000
 
-CMD ["node", "index.js"]
+CMD ["npm", "start"]
