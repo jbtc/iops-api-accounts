@@ -97,22 +97,9 @@ server.register([
 ], err => {
   if (err) throw err;
 
-  try {
-    const options = {
-      partition: Config.get('IOPS_REDIS_PARTITION'),
-      host: Config.get('IOPS_REDIS_HOST'),
-      port: Config.get('IOPS_REDIS_PORT'),
-      password: Config.get('IOPS_REDIS_PASSWORD')
-    };
-
-    startCache(options).then(() => {
-      server.start(function () {
-        console.log("Server started", server.info.uri);
-      });
-    });
-  } catch (e) {
-    throw e;
-  }
+  server.start(function () {
+    console.log("Server started", server.info.uri);
+  });
 });
 
 
