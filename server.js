@@ -5,7 +5,6 @@ import Relish from 'relish';
 
 import Config from './config';
 
-
 const server = new Hapi.Server({
   connections: {
     router: {
@@ -80,7 +79,7 @@ server.register([
 ], err => {
   if (err) throw err;
 
-  server.start(function () {
+  server.start(() => {
     console.log("Server started", server.info.uri);
   });
 });
