@@ -1,15 +1,13 @@
-FROM node:5-wheezy
+FROM node:wheezy
 
 MAINTAINER Tyler Garlick <tjgarlick@gmail.com>
 
-RUN mkdir -p /source
-WORKDIR /source
+COPY . /src
 
-COPY package.json /source
+WORKDIR /src
+
 RUN npm install
-
-COPY . /source
 
 EXPOSE 4000
 
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
