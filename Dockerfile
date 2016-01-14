@@ -2,12 +2,14 @@ FROM node:latest
 
 MAINTAINER Tyler Garlick <tjgarlick@gmail.com>
 
-COPY . /src
+RUN mkdir -p /source
+WORKDIR /source
 
-WORKDIR /src
-
+COPY package.json /source
 RUN npm install
+
+COPY . /source
 
 EXPOSE 4000
 
-CMD ["node", "."]
+CMD ["npm", "start"]
