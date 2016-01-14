@@ -1,12 +1,11 @@
-FROM node:wheezy
+FROM node:latest
 
 MAINTAINER Tyler Garlick <tjgarlick@gmail.com>
 
-COPY . /src
-
-WORKDIR /src
-
+ADD package.json package.json
 RUN npm install
+
+ADD . .
 
 EXPOSE 4000
 
