@@ -1,6 +1,8 @@
 'use strict';
 
-require('babel-polyfill');
+if (process.env.NEW_RELIC_HOME) {
+  require('newrelic');
+}
 
 require('babel-register');
 

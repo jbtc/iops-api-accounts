@@ -56,6 +56,7 @@
     "lodash": "^4.0.0",
     "moment": "^2.11.1",
     "nconf": "^0.8.2",
+    "newrelic": "^1.25.1",
     "promised-mongo": "^1.2.0",
     "rejoice": "^3.0.0",
     "relish": "^0.1.3",
