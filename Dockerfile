@@ -10,7 +10,7 @@ ADD . .
 
 # If you had native dependencies you can now remove build tools
 # RUN apk del make gcc g++ python && \
-rm -rf /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
+#rm -rf /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
 
 EXPOSE 4000
 
