@@ -6,23 +6,56 @@ import * as Models from '../lib/models';
 import _ from 'lodash';
 import Joi from '../lib/joi';
 
-const VERSION = `/v1`;
-
-const PREFIX = {
-  ACCOUNT: `${VERSION}/accounts/{accountId}`,
-  SITE: `${VERSION}/sites/{siteId}`
-};
-
-
-const PATH = {
-  ACCOUNT_CLAIMS: `${PREFIX.ACCOUNT}/roles`,
-  SITES_CLAIMS: `${PREFIX.SITE}/roles`
-};
-
 export default [
 
   {
-    path: `${VERSION}/roles/{roleId}`,
+    path: '/v1/roles',
+    method: 'GET',
+    config: {
+      tags: ['api', 'v1'],
+      description: 'Roles'
+    },
+    handler: {
+      async: async (request, reply) => {
+        try {
+          const roles = await Services.roles.find({ isGlobal: true });
+          return reply(roles);
+        } catch (e) {
+          return reply(e);
+        }
+      }
+    }
+  },
+
+  {
+    path: '/v1/roles',
+    method: 'POST',
+    config: {
+      tags: ['api'],
+      description: `Create Global Roles`,
+
+      validate: {
+        payload: Joi.object(_.omit(Models.Role, ['isActive', 'accountId'])).meta({ className: 'NewRole' })
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          const role = request.payload;
+          role.isGlobal = true;
+
+          try {
+            const result = await Services.roles.create(role);
+            return reply(result);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: `/v1/roles/{roleId}`,
     method: 'GET',
 
 
@@ -51,36 +84,7 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_CLAIMS,
-    method: 'POST',
-    config: {
-      tags: ['api'],
-      description: `Account's Roles`,
-
-      validate: {
-        params: { accountId: Joi.shortid().required() },
-        payload: Joi.object(_.omit(Models.Role, ['isActive', 'activeId'])).meta({ className: 'NewRole' })
-      },
-
-      handler: {
-        async: async (request, reply) => {
-          let role = request.payload;
-          const accountId = request.params.accountId;
-          role.accountId = accountId;
-
-          try {
-            role = await Services.roles.create(role);
-            return reply(role);
-          } catch (e) {
-            return reply(e);
-          }
-        }
-      }
-    }
-  },
-
-  {
-    path: `${VERSION}/roles/{roleId}`,
+    path: `/v1/roles/{roleId}`,
     method: 'PUT',
     config: {
       tags: ['api'],
@@ -88,7 +92,7 @@ export default [
 
       validate: {
         params: { roleId: Joi.shortid().required() },
-        payload: Joi.object().keys(_.omit(Models.Role, 'isActive')).meta({ className: 'UpdateRole'})
+        payload: Joi.object().keys(_.omit(Models.Role)).meta({ className: 'UpdateRole' })
       },
 
       handler: {
@@ -107,7 +111,7 @@ export default [
   },
 
   {
-    path: `${VERSION}/roles/{roleId}`,
+    path: `/v1/roles/{roleId}`,
     method: 'DELETE',
     config: {
       tags: ['api'],
@@ -132,16 +136,51 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_CLAIMS,
+    path: '/v1/sites/{siteId}/roles',
     method: 'GET',
     config: {
       tags: ['api'],
       description: `Account's Roles`,
 
+      validate: {
+        params: { siteId: Joi.shortid().required() }
+      },
+
       handler: {
         async: async (request, reply) => {
+          const siteId = request.params.siteId;
+
           try {
-            return reply([]);
+            const roles = await Services.roles.find({ siteId, isActive: true });
+            return reply(roles);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: '/v1/sites/{siteId}/roles',
+    method: 'POST',
+    config: {
+      tags: ['api'],
+      description: `Site's Roles`,
+
+      validate: {
+        params: { siteId: Joi.shortid().required() },
+        payload: Joi.object(_.omit(Models.Role, ['isActive', 'isGlobal'])).meta({ className: 'NewRole' }).meta({ className: 'SiteRole' })
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          let role = request.payload;
+          role.siteId = request.params.siteId;
+
+          try {
+            role = await Services.roles.create(role);
+            return reply(role);
           } catch (e) {
             return reply(e);
           }

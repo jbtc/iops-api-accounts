@@ -18,7 +18,7 @@ export default [
       handler: {
         async: async (request, reply) => {
           try {
-            let claims = await Services.claims.find({accountId: {$exists: false}, isActive: true});
+            let claims = await Services.claims.find({ accountId: { $exists: false }, isActive: true });
             return reply(claims);
           } catch (e) {
             return reply(e);
@@ -154,7 +154,7 @@ export default [
         async: async (request, reply) => {
           const accountId = request.params.accountId;
           try {
-            const claims = await Services.claims.find({accountId, isActive: true});
+            const claims = await Services.claims.find({ accountId, isActive: true });
             return reply(claims);
           } catch (e) {
             return reply(e);
@@ -175,7 +175,7 @@ export default [
         params: {
           accountId: Joi.string().required()
         },
-        payload: Joi.object(_.omit(Models.Claim, 'siteId', 'accountId'))
+        payload: Joi.object(_.omit(Models.Claim, 'siteId', 'accountId')).meta({ className: 'AccountClaim' })
       },
       handler: {
         async: async (request, reply) => {
@@ -235,7 +235,7 @@ export default [
         params: {
           siteId: Joi.string().required()
         },
-        payload: Joi.object(_.omit(Models.Claim, 'accountId', 'siteId')).meta({className: 'SiteClaim'})
+        payload: Joi.object(_.omit(Models.Claim, 'accountId', 'siteId')).meta({ className: 'SiteClaim' })
       },
 
       handler: {
@@ -274,7 +274,7 @@ export default [
           const field = `claims.${claimId}`;
 
           try {
-            const claims = Services.claims.find({field: {$exists: true}});
+            const claims = Services.claims.find({ field: { $exists: true } });
             return reply(claims);
           } catch (e) {
             return reply(e);
