@@ -9,11 +9,11 @@ import _ from 'lodash';
 const VERSION = `/v1`;
 
 const PREFIX = {
-  USER: `${VERSION}/users/{userId}`
+  ACCOUNT: `${VERSION}/users/{userId}`
 };
 
 const PATH = {
-  ACCOUNT_DASHBOARDS: `${PREFIX.USER}/dashboards`
+  ACCOUNT_CLAIMS: `${PREFIX.ACCOUNT}/dashboards`
 };
 
 export default [
@@ -28,7 +28,7 @@ export default [
       handler: {
         async: async (request, reply) => {
           try {
-            const results = Services.dashboards.find({ isActive: true });
+            const results = Services.dashboards.find({isActive: true});
             return reply(results);
           } catch (e) {
             return reply(e);
@@ -67,8 +67,8 @@ export default [
       description: `Dashboard`,
 
       validate: {
-        params: { dashboardId: Joi.shortid().required() },
-        payload: Joi.object(_.omit(Models.Dashboard, 'userId')).meta({ className: 'UpdateDashboard' })
+        params: {dashboardId: Joi.shortid().required()},
+        payload: Joi.object(_.omit(Models.Dashboard, 'userId')).meta({className: 'UpdateDashboard'})
       },
 
       handler: {
@@ -94,14 +94,14 @@ export default [
       description: `Remove Dashboard`,
 
       validate: {
-        params: { dashboardId: Joi.shortid().required() }
+        params: {dashboardId: Joi.shortid().required()}
       },
 
       handler: {
         async: async (request, reply) => {
           const id = request.params.dashboardId;
           try {
-            let result = await Services.dashboards.remove(id);
+            const result = await Services.dashboards.remove(id);
             return reply(result);
           } catch (e) {
             return reply(e);
@@ -112,14 +112,14 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_DASHBOARDS,
+    path: PATH.ACCOUNT_CLAIMS,
     method: 'GET',
     config: {
       tags: ['api'],
       description: `User's Dashboard`,
 
       validate: {
-        params: { userId: Joi.shortid().required() }
+        params: {userId: Joi.shortid().required()}
       },
 
       handler: {
@@ -127,7 +127,7 @@ export default [
           const userId = request.params.userId;
           try {
 
-            const results = Services.dashboards.find({ isActive: true, userId });
+            const results = Services.dashboards.find({isActive: true, userId});
             return reply(results);
           } catch (e) {
             return reply(e);
@@ -138,21 +138,21 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_DASHBOARDS,
+    path: PATH.ACCOUNT_CLAIMS,
     method: 'POST',
     config: {
       tags: ['api'],
       description: `Create Dashboard`,
 
       validate: {
-        params: { userId: Joi.shortid().required() },
-        payload: Joi.object(_.omit(Models.Dashboard, 'isActive')).meta({ className: 'NewDashboard' })
+        params: {userId: Joi.shortid().required()},
+        payload: Joi.object(_.omit(Models.Dashboard, 'isActive')).meta({className: 'NewDashboard'})
       },
 
       handler: {
         async: async (request, reply) => {
           const userId = request.params.userId;
-          let dashboard = _.merge(request.payload, { userId });
+          let dashboard = _.merge(request.payload, {userId});
 
           try {
             const result = Services.dashboards.create(dashboard);

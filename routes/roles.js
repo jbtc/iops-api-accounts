@@ -9,14 +9,14 @@ import Joi from '../lib/joi';
 const VERSION = `/v1`;
 
 const PREFIX = {
-  USER: `${VERSION}/accounts/{accountId}`,
+  ACCOUNT: `${VERSION}/accounts/{accountId}`,
   SITE: `${VERSION}/sites/{siteId}`
 };
 
 
 const PATH = {
-  ACCOUNT_DASHBOARDS: `${PREFIX.USER}/roles`,
-  SITES_DASHBOARDS: `${PREFIX.SITE}/roles`
+  ACCOUNT_CLAIMS: `${PREFIX.ACCOUNT}/roles`,
+  SITES_CLAIMS: `${PREFIX.SITE}/roles`
 };
 
 export default [
@@ -51,7 +51,7 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_DASHBOARDS,
+    path: PATH.ACCOUNT_CLAIMS,
     method: 'POST',
     config: {
       tags: ['api'],
@@ -132,7 +132,7 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_DASHBOARDS,
+    path: PATH.ACCOUNT_CLAIMS,
     method: 'GET',
     config: {
       tags: ['api'],

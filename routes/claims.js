@@ -6,22 +6,10 @@ import Joi from '../lib/joi';
 import * as Models from '../lib/models';
 import _ from 'lodash';
 
-const VERSION = `/v1`;
-
-const PREFIX = {
-  USER: `${VERSION}/accounts/{accountId}`,
-  SITE: `${VERSION}/sites/{siteId}`
-};
-
-const PATH = {
-  ACCOUNT_DASHBOARDS: `${PREFIX.USER}/claims`,
-  SITES_DASHBOARDS: `${PREFIX.SITE}/claims`
-};
-
 export default [
 
   {
-    path: `${VERSION}/claims`,
+    path: `/v1/claims`,
     method: 'GET',
     config: {
       tags: ['api'],
@@ -30,7 +18,7 @@ export default [
       handler: {
         async: async (request, reply) => {
           try {
-            let claims = await Services.claims.find({ accountId: { $exists: false }, isActive: true });
+            let claims = await Services.claims.find({accountId: {$exists: false}, isActive: true});
             return reply(claims);
           } catch (e) {
             return reply(e);
@@ -41,7 +29,7 @@ export default [
   },
 
   {
-    path: `${VERSION}/claims/{claimId}`,
+    path: `/v1/claims/{claimId}`,
     method: 'GET',
     config: {
       tags: ['api'],
@@ -70,7 +58,7 @@ export default [
   },
 
   {
-    path: `${VERSION}/claims/{claimId}`,
+    path: `/v1/claims/{claimId}`,
     method: 'PUT',
     config: {
       tags: ['api'],
@@ -99,7 +87,7 @@ export default [
   },
 
   {
-    path: `${VERSION}/claims`,
+    path: `/v1/claims`,
     method: 'POST',
     config: {
       tags: ['api'],
@@ -121,9 +109,8 @@ export default [
     }
   },
 
-
   {
-    path: `${VERSION}/claims/{claimId}`,
+    path: `/v1/claims/{claimId}`,
     method: 'DELETE',
     config: {
       tags: ['api'],
@@ -151,16 +138,24 @@ export default [
   },
 
   {
-    path: PATH.ACCOUNT_DASHBOARDS,
+    path: '/v1/accounts/{accountId}/claims',
     method: 'GET',
     config: {
       tags: ['api'],
       description: `Account's Claims`,
 
+      validate: {
+        params: {
+          accountId: Joi.string().required()
+        }
+      },
+
       handler: {
         async: async (request, reply) => {
+          const accountId = request.params.accountId;
           try {
-            return reply([]);
+            const claims = await Services.claims.find({accountId, isActive: true});
+            return reply(claims);
           } catch (e) {
             return reply(e);
           }
@@ -170,16 +165,57 @@ export default [
   },
 
   {
-    path: PATH.SITES_DASHBOARDS,
+    path: '/v1/accounts/{accountId}/claims',
+    method: 'POST',
+    config: {
+      tags: ['api'],
+      description: `Account's Claims`,
+
+      validate: {
+        params: {
+          accountId: Joi.string().required()
+        },
+        payload: Joi.object(_.omit(Models.Claim, 'siteId', 'accountId'))
+      },
+      handler: {
+        async: async (request, reply) => {
+          const accountId = request.params.accountId;
+          const claim = request.payload;
+          claim.accountId = accountId;
+
+          try {
+            const result = await Services.claims.create(claim);
+            return reply(result);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: '/v1/sites/{siteId}/claims',
     method: 'GET',
     config: {
       tags: ['api'],
       description: `Site's Claims`,
 
+      validate: {
+        params: {
+          siteId: Joi.string().required()
+        }
+      },
+
       handler: {
         async: async (request, reply) => {
+          const siteId = request.params.siteId;
+          const claim = request.payload;
+          claim.siteId = siteId;
+
           try {
-            return reply([]);
+            const result = await Services.claims.create(claim);
+            return reply(result);
           } catch (e) {
             return reply(e);
           }
@@ -189,16 +225,57 @@ export default [
   },
 
   {
-    path: `${VERSION}/claims/{claimId}/users`,
+    path: '/v1/sites/{siteId}/claims',
+    method: 'POST',
+    config: {
+      tags: ['api'],
+      description: `Site's Claims`,
+
+      validate: {
+        params: {
+          siteId: Joi.string().required()
+        },
+        payload: Joi.object(_.omit(Models.Claim, 'accountId', 'siteId')).meta({className: 'SiteClaim'})
+      },
+
+      handler: {
+        async: async (request, reply) => {
+          const siteId = request.params.siteId;
+          const claim = request.payload;
+          claim.siteId = siteId;
+
+          try {
+            const result = await Services.claims.create(claim);
+            return reply(result);
+          } catch (e) {
+            return reply(e);
+          }
+        }
+      }
+    }
+  },
+
+  {
+    path: `/v1/claims/{claimId}/users`,
     method: 'GET',
     config: {
       tags: ['api'],
       description: `Users associated to a claim`,
 
+      validate: {
+        params: {
+          claimId: Joi.string().required()
+        }
+      },
+
       handler: {
         async: async (request, reply) => {
+          const claimId = request.params.claimId;
+          const field = `claims.${claimId}`;
+
           try {
-            return reply([]);
+            const claims = Services.claims.find({field: {$exists: true}});
+            return reply(claims);
           } catch (e) {
             return reply(e);
           }
@@ -206,6 +283,5 @@ export default [
       }
     }
   }
-
 
 ];
