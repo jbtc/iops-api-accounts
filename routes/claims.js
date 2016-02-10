@@ -210,11 +210,9 @@ export default [
       handler: {
         async: async (request, reply) => {
           const siteId = request.params.siteId;
-          const claim = request.payload;
-          claim.siteId = siteId;
 
           try {
-            const result = await Services.claims.create(claim);
+            const result = await Services.claims.find({ siteId, isActive: true });
             return reply(result);
           } catch (e) {
             return reply(e);
