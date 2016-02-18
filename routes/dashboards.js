@@ -116,8 +116,8 @@ export default [
         async: async (request, reply) => {
           const userId = request.params.userId;
           try {
+            const results = await Services.dashboards.findByUserId(userId);
 
-            const results = await Services.dashboards.find({ isActive: true, userId });
             return reply(results);
           } catch (e) {
             return reply(e);
@@ -142,47 +142,10 @@ export default [
       handler: {
         async: async (request, reply) => {
           const userId = request.params.userId;
-          let dashboard = _.merge(request.payload, { userId });
+          const dashboard = request.payload;
 
           try {
-            const result = await Services.dashboards.create(dashboard);
-            return reply(result);
-          } catch (e) {
-            return reply(e);
-          }
-        }
-      }
-    }
-  },
-
-  {
-    path: '/v1/users/{userId}/dashboards/{dashboardId}',
-    method: 'PUT',
-    config: {
-      tags: ['api'],
-      description: `Update User's Dashboard`,
-
-      validate: {
-        params: {
-          userId: Joi.shortid().required(),
-          dashboardId: Joi.shortid().required()
-        },
-        payload: Joi.object(Models.Dashboard).meta({ className: 'UpdateDashboard' })
-      },
-
-      handler: {
-        async: async (request, reply) => {
-          const userId = request.params.userId;
-          const dashboardId = request.params.dashboardId;
-
-          let dashboard = _.merge(request.payload, { userId });
-
-          if (dashboard._id) {
-            delete dashboard._id;
-          }
-
-          try {
-            const result = await Services.dashboards.update(dashboardId, dashboard);
+            const result = await Services.dashboards.create(dashboard, userId);
             return reply(result);
           } catch (e) {
             return reply(e);
@@ -208,10 +171,11 @@ export default [
 
       handler: {
         async: async (request, reply) => {
+          const userId = request.params.userId;
           const dashboardId = request.params.dashboardId;
 
           try {
-            const result = await Services.dashboards.remove(dashboardId);
+            const result = await Services.dashboards.remove(dashboardId, userId);
             return reply(result);
           } catch (e) {
             return reply(e);
