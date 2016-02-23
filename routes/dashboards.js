@@ -175,7 +175,7 @@ export default [
           const dashboardId = request.params.dashboardId;
 
           try {
-            const result = await Services.dashboards.remove(dashboardId, userId);
+            const result = await Services.dashboards.removeByUserId(dashboardId, userId);
             return reply(result);
           } catch (e) {
             return reply(e);
