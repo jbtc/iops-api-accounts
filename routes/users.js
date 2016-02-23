@@ -66,7 +66,7 @@ export default [
       description: 'Create User',
 
       validate: {
-        payload: Joi.object().keys(_.omit(Models.User, 'passwordHash', 'isActive')).keys({ password: Joi.string().min(7) }).meta({ className: 'NewUser' })
+        payload: Joi.object().keys(_.omit(Models.User, 'passwordHash', 'isActive')).keys({ password: Joi.string().min(7).required() }).meta({ className: 'NewUser' })
       },
 
       handler: {
