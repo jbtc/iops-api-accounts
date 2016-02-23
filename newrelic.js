@@ -1,4 +1,4 @@
-const KEY = process.env.NEW_RELIC;
+const KEY = process.env.NEW_RELIC_HOME;
 console.log(KEY);
 
 /**

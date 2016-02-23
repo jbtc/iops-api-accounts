@@ -1,4 +1,5 @@
 {
-  "presets": ["es2016-node5"],
-  "plugins": ["add-module-exports", "transform-decorators"]
+  "presets": [
+    "pundits"
+  ]
 }
