@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node .",
     "test": "mocha test --recursive",
-    "coverage": "istanbul cover node_modules/.bin/_mocha -- -u exports -R spec --recursive test",
-    "lint": "esw --watch"
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- -u exports -R spec --recursive test"
   },
   "repository": {
     "type": "git",
@@ -22,17 +21,11 @@
   "homepage": "https://bitbucket.org/jbt-iops/iops-api-accounts#readme",
   "devDependencies": {
     "code": "^2.0.1",
-    "eslint": "^2.2.0",
-    "eslint-watch": "^2.1.8",
     "mocha": "^2.4.5",
     "mochawait": "^2.0.1"
   },
   "dependencies": {
-    "babel-cli": "^6.5.1",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-plugin-transform-decorators": "^6.5.0",
     "babel-polyfill": "^6.5.0",
-    "babel-preset-es2016-node5": "^1.1.2",
     "babel-preset-pundits": "^1.0.2",
     "babel-register": "^6.5.2",
     "bcryptjs": "^2.2.0",
