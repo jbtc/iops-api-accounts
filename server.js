@@ -22,7 +22,7 @@ const server = new Hapi.Server({
   }
 });
 
-server.connection({ port: process.env.PORT || 3000 });
+server.connection({ port: process.env.PORT || 4000 });
 
 server.route({
   path: '/',
@@ -47,13 +47,13 @@ server.register([
   {
     register: require('good'),
     options: {
-      requestHeaders: true,
-      reporters: [
-        {
-          reporter: 'good-console',
-          events: { response: '*', log: '*', error: '*' }
-        }
-      ]
+      includes: { request: ['headers', 'payload'], response: ['payload']},
+      ops: {
+        interval: 5000
+      },
+      reporters: {
+        console: [{ module: 'good-console' }, 'stdout']
+      }
     }
   },
   {
