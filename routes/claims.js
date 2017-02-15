@@ -37,7 +37,7 @@ export default [
 
       validate: {
         params: {
-          claimId: Joi.shortid().required()
+          claimId: Joi.string().required()
         }
       },
 
@@ -66,7 +66,7 @@ export default [
 
       validate: {
         params: {
-          claimId: Joi.shortid().required()
+          claimId: Joi.string().required()
         },
         payload: Joi.object(Models.Claim).optionalKeys('name', 'description', 'accountId')
       },

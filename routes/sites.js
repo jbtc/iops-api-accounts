@@ -25,7 +25,7 @@ export default [
 
       validate: {
         params: {
-          accountId: Joi.shortid().required()
+          accountId: Joi.string().required()
         }
       },
 
@@ -52,7 +52,7 @@ export default [
 
       validate: {
         params: {
-          siteId: Joi.shortid().required()
+          siteId: Joi.string().required()
         }
       },
 
@@ -84,7 +84,7 @@ export default [
 
       validate: {
         params: {
-          accountId: Joi.shortid().required()
+          accountId: Joi.string().required()
         },
         payload: Joi.object(_.omit(Models.Site, 'isActive')).meta({ className: 'NewAccount' })
       },
@@ -115,7 +115,7 @@ export default [
 
       validate: {
         params: {
-          siteId: Joi.shortid().required()
+          siteId: Joi.string().required()
         },
         payload: Joi.object(_.omit(Models.Site, 'isActive', 'accountId')).meta({ className: 'UpdateAccount' })
       },
@@ -143,8 +143,8 @@ export default [
 
       validate: {
         params: {
-          accountId: Joi.shortid().required(),
-          siteId: Joi.shortid().required()
+          accountId: Joi.string().required(),
+          siteId: Joi.string().required()
         }
       },
 

@@ -93,7 +93,7 @@ export default [
 
       validate: {
         params: {
-          accountId: Joi.shortid().required()
+          accountId: Joi.string().required()
         },
         payload: Models.Account
       }

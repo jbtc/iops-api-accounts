@@ -65,7 +65,7 @@ export default [
 
       validate: {
         params: {
-          roleId: Joi.shortid()
+          roleId: Joi.string()
         }
       },
 
@@ -91,7 +91,7 @@ export default [
       description: `Update Role`,
 
       validate: {
-        params: { roleId: Joi.shortid().required() },
+        params: { roleId: Joi.string().required() },
         payload: Joi.object().keys(_.omit(Models.Role)).meta({ className: 'UpdateRole' })
       },
 
@@ -118,7 +118,7 @@ export default [
       description: `Delete a Role`,
 
       validate: {
-        params: { roleId: Joi.shortid().required() }
+        params: { roleId: Joi.string().required() }
       },
 
       handler: {
@@ -143,7 +143,7 @@ export default [
       description: `Account's Roles`,
 
       validate: {
-        params: { siteId: Joi.shortid().required() }
+        params: { siteId: Joi.string().required() }
       },
 
       handler: {
@@ -169,7 +169,7 @@ export default [
       description: `Site's Roles`,
 
       validate: {
-        params: { siteId: Joi.shortid().required() },
+        params: { siteId: Joi.string().required() },
         payload: Joi.object(_.omit(Models.Role, ['isActive', 'isGlobal'])).meta({ className: 'NewRole' }).meta({ className: 'SiteRole' })
       },
 
